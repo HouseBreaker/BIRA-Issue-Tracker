@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using BIRA_Issue_Tracker.Models;
 using BIRA_Issue_Tracker.Models.Identity;
+using BIRA_Issue_Tracker.Models.IssueTracker;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -29,6 +31,90 @@ namespace BIRA_Issue_Tracker.Migrations
 
 				CreateRole(context, "Administrators");
 				AddUserToRole(context, "admin@gmail.com", "Administrators");
+			}
+
+			if (!context.Issues.Any())
+			{
+				CreateIssue(context,
+					"HTTP 400 error",
+					"Adding an author with incorrect date format will return an HTTP 400 response code.",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"00 birthday causes exception",
+					"Adding an author with a birth date which has day 00 will add the author with a birth date of the last day of the previous month.",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"negative birthday causes exception",
+					"Adding an author with a birth date the day of which is negative will add the author with a birth date which is the same but the day is non negative.",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"no last name causes exception",
+					"Adding an author with a valid first name andate, but no last name throws an unhandled exception \"Last name out of range\" insteaof validating the input before sending it.",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"missing first name causes exception",
+					"Adding an author with a valid last name and date, but no first name throws an unhandled exception \"First name out of range\" instead of validating the input before sending it.",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"short first name it causes exception",
+					"If first name is too short, the system throws an unhandled exception \"First name out of range\" instead of validating the input before sending it.",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"short last name causes exception",
+					"If last name is too short, the system throws an unhandled exception \"Last name out of range\" instead of validating the input before sending it.",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"Wrong first name upper limit",
+					"First name upper limit is 239 characters instead of 240",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
+
+				CreateIssue(context,
+					"Wrong last name upper limit",
+					"Last name upper limit is 237 characters instead of 240",
+					State.Open,
+					"admin@gmail.com",
+					"gosho@gmail.com",
+					new[] {new Tag("user input")}
+				);
 			}
 
 			context.SaveChanges();
@@ -62,6 +148,22 @@ namespace BIRA_Issue_Tracker.Migrations
 			{
 				throw new Exception(string.Join("; ", userCreateResult.Errors));
 			}
+		}
+
+		private static void CreateIssue(IssueTrackerDbContext context, string title, string description, State state,
+			string author, string assignee, IEnumerable<Tag> tags)
+		{
+			var issue = new Issue
+			{
+				Title = title,
+				Description = description,
+				State = state,
+				Author = context.Users.FirstOrDefault(u => u.UserName == author),
+				Assignee = context.Users.FirstOrDefault(u => u.UserName == assignee),
+				Tags = tags
+			};
+
+			context.Issues.Add(issue);
 		}
 
 		private void CreateRole(IssueTrackerDbContext context, string roleName)
