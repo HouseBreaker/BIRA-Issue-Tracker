@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using BIRA_Issue_Tracker.Models.Identity;
 
-namespace BIRA_Issue_Tracker.Models
+namespace BIRA_Issue_Tracker.Models.IssueTracker
 {
 	public class Issue
 	{

@@ -1,4 +1,4 @@
-﻿namespace BIRA_Issue_Tracker.Models
+﻿namespace BIRA_Issue_Tracker.Models.IssueTracker
 {
 	public enum State
 	{

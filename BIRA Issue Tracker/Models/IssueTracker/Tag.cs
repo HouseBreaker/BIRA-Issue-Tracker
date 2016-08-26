@@ -9,7 +9,7 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		public int Id { get; set; }
 
 		[Required]
-		[StringLength(6)]
+		[StringLength(1)]
 		public string Name { get; set; }
 
 		[Required]
