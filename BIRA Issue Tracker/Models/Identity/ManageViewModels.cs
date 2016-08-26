@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
-namespace BIRA_Issue_Tracker.Models
+namespace BIRA_Issue_Tracker.Models.Identity
 {
     public class IndexViewModel
     {

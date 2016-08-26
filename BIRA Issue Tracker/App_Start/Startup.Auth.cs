@@ -1,11 +1,11 @@
 ﻿using System;
+using BIRA_Issue_Tracker.Models.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using BIRA_Issue_Tracker.Models;
 
 namespace BIRA_Issue_Tracker
 {

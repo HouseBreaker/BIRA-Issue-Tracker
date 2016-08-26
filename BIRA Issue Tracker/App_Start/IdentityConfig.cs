@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using BIRA_Issue_Tracker.Models;
+using BIRA_Issue_Tracker.Models.Identity;
 
 namespace BIRA_Issue_Tracker
 {
