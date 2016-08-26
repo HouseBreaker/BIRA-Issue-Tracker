@@ -18,5 +18,7 @@ namespace BIRA_Issue_Tracker.Models
 		}
 
 		public DbSet<Issue> Issues { get; set; }
+
+		public DbSet<Tag> Tags { get; set; }
 	}
 }

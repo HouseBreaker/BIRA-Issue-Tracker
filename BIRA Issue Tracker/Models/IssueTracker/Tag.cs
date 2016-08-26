@@ -10,11 +10,20 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 			this.Name = name;
 		}
 
+		public Tag()
+		{
+		}
+
 		[Key]
 		public int Id { get; set; }
 
 		[Required]
 		[StringLength(30)]
 		public string Name { get; set; }
+
+		public override string ToString()
+		{
+			return this.Name;
+		}
 	}
 }

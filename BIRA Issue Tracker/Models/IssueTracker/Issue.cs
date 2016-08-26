@@ -25,7 +25,7 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		public State State { get; set; }
 
 		[Required]
-		public IEnumerable<Tag> Tags { get; set; }
+		public IList<Tag> Tags { get; set; }
 
 		[Required]
 		public ApplicationUser Author { get; set; }

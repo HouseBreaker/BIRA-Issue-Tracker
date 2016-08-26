@@ -33,6 +33,21 @@ namespace BIRA_Issue_Tracker.Migrations
 				AddUserToRole(context, "admin@gmail.com", "Administrators");
 			}
 
+			if (!context.Tags.Any())
+			{
+				context.Tags.AddRange(new[]
+				{
+					new Tag("user input"),
+					new Tag("user interface"),
+					new Tag("network"),
+					new Tag("general"),
+					new Tag("registration"),
+					new Tag("login"),
+				});
+			}
+
+			context.SaveChanges();
+
 			if (!context.Issues.Any())
 			{
 				CreateIssue(context,
@@ -41,7 +56,11 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[]
+					{
+						FindTagByName(context, "user input"),
+						FindTagByName(context, "network"),
+					}
 				);
 
 				CreateIssue(context,
@@ -50,7 +69,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 
 				CreateIssue(context,
@@ -59,7 +78,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 
 				CreateIssue(context,
@@ -68,7 +87,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 
 				CreateIssue(context,
@@ -77,7 +96,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 
 				CreateIssue(context,
@@ -86,7 +105,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 
 				CreateIssue(context,
@@ -95,7 +114,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 
 				CreateIssue(context,
@@ -104,7 +123,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 
 				CreateIssue(context,
@@ -113,11 +132,16 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {new Tag("user input")}
+					new[] {FindTagByName(context, "user input"),}
 				);
 			}
 
 			context.SaveChanges();
+		}
+
+		private static Tag FindTagByName(IssueTrackerDbContext context, string name)
+		{
+			return context.Tags.Find(name);
 		}
 
 		private static void CreateUser(IssueTrackerDbContext context,
