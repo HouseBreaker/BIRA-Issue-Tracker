@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BIRA_Issue_Tracker.Models
+namespace BIRA_Issue_Tracker.Models.IssueTracker
 {
 	public class Tag
 	{

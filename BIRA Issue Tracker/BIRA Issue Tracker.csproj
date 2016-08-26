@@ -174,14 +174,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Identity\AccountViewModels.cs" />
     <Compile Include="Models\IssueTrackerDbContext.cs" />
     <Compile Include="Models\Identity\IdentityModels.cs" />
     <Compile Include="Models\Identity\ManageViewModels.cs" />
-    <Compile Include="Models\Issue.cs" />
-    <Compile Include="Models\IssueTrackerInitializer.cs" />
-    <Compile Include="Models\State.cs" />
-    <Compile Include="Models\Tag.cs" />
+    <Compile Include="Models\IssueTracker\Issue.cs" />
+    <Compile Include="Models\IssueTracker\State.cs" />
+    <Compile Include="Models\IssueTracker\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

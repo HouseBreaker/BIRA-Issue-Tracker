@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+using BIRA_Issue_Tracker.Models;
 using BIRA_Issue_Tracker.Models.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace BIRA_Issue_Tracker.Models
+namespace BIRA_Issue_Tracker.Migrations
 {
-	public class SchoolInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<IssueTrackerDbContext>
+	using System;
+	using System.Data.Entity;
+	using System.Data.Entity.Migrations;
+	using System.Linq;
+
+	internal sealed class Configuration : DbMigrationsConfiguration<BIRA_Issue_Tracker.Models.IssueTrackerDbContext>
 	{
+		public Configuration()
+		{
+			AutomaticMigrationsEnabled = true;
+			ContextKey = "BIRA_Issue_Tracker.Models.IssueTrackerDbContext";
+		}
+
 		protected override void Seed(IssueTrackerDbContext context)
 		{
 			if (!context.Users.Any())
@@ -24,7 +31,6 @@ namespace BIRA_Issue_Tracker.Models
 				AddUserToRole(context, "admin@gmail.com", "Administrators");
 			}
 
-			
 			context.SaveChanges();
 		}
 

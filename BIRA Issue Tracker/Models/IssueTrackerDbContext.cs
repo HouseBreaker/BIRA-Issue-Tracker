@@ -1,4 +1,5 @@
-﻿using BIRA_Issue_Tracker.Models.Identity;
+﻿using System.Data.Entity;
+using BIRA_Issue_Tracker.Models.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BIRA_Issue_Tracker.Models
@@ -15,6 +16,6 @@ namespace BIRA_Issue_Tracker.Models
 			return new IssueTrackerDbContext();
 		}
 
-		public System.Data.Entity.DbSet<Issue> Issues { get; set; }
+		public DbSet<Issue> Issues { get; set; }
 	}
 }
