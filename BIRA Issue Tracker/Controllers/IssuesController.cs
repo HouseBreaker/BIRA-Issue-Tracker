@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BIRA_Issue_Tracker.Models;
+using BIRA_Issue_Tracker.Models.IssueTracker;
 
 namespace BIRA_Issue_Tracker.Controllers
 {

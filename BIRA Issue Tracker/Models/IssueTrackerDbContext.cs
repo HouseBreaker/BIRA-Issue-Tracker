@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using BIRA_Issue_Tracker.Models.Identity;
+using BIRA_Issue_Tracker.Models.IssueTracker;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BIRA_Issue_Tracker.Models
