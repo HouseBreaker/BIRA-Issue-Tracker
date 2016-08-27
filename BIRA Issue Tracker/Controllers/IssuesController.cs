@@ -47,7 +47,7 @@ namespace BIRA_Issue_Tracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,State,Date,Tags")] Issue issue)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,Author,Assignee,State,Tags")] Issue issue)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace BIRA_Issue_Tracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,State,Date,Tags")] Issue issue)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,State,Author,Assignee,Date,Tags")] Issue issue)
         {
             if (ModelState.IsValid)
             {
