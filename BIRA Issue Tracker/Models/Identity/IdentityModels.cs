@@ -17,5 +17,10 @@ namespace BIRA_Issue_Tracker.Models.Identity
         }
 
 	    public string FullName { get; set; }
+
+	    public override string ToString()
+	    {
+		    return this.Email;
+	    }
     }
 }
