@@ -21,6 +21,8 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		[StringLength(30)]
 		public string Name { get; set; }
 
+		public virtual ICollection<Issue> Issues { get; set; }
+
 		public override string ToString()
 		{
 			return this.Name;

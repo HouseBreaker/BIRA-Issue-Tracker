@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using BIRA_Issue_Tracker.Models.Identity;
 
 namespace BIRA_Issue_Tracker.Models.IssueTracker
 {
 	public class Issue
 	{
-		public Issue()
-		{
-			this.Date = DateTime.Now;
-		}
-
 		[Key]
 		public int Id { get; set; }
 
@@ -25,12 +22,12 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		public State State { get; set; }
 
 		[Required]
-		public IList<Tag> Tags { get; set; }
+		public virtual ICollection<Tag> Tags { get; set; }
 
 		[Required]
-		public ApplicationUser Author { get; set; }
-
-		public ApplicationUser Assignee { get; set; }
+		public virtual ApplicationUser Author { get; set; }
+		
+		public virtual ApplicationUser Assignee { get; set; }
 
 		[Required]
 		public DateTime Date { get; set; }
