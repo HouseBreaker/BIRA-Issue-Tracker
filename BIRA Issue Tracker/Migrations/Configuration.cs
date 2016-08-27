@@ -17,6 +17,7 @@ namespace BIRA_Issue_Tracker.Migrations
 		public Configuration()
 		{
 			AutomaticMigrationsEnabled = true;
+			AutomaticMigrationDataLossAllowed = true;
 			ContextKey = "BIRA_Issue_Tracker.Models.IssueTrackerDbContext";
 		}
 
@@ -24,7 +25,7 @@ namespace BIRA_Issue_Tracker.Migrations
 		{
 			if (!context.Users.Any())
 			{
-				CreateUser(context, "admin@gmail.com", "123", "System Administrator");
+				CreateUser(context, "admin@gmail.com", "123", "Vladi Admina");
 				CreateUser(context, "pesho@gmail.com", "123", "Peter Ivanov");
 				CreateUser(context, "merry@gmail.com", "123", "Maria Petrova");
 				CreateUser(context, "gosho@gmail.com", "123", "George Petrov");
@@ -35,7 +36,7 @@ namespace BIRA_Issue_Tracker.Migrations
 
 			if (!context.Tags.Any())
 			{
-				context.Tags.AddRange(new[]
+				context.Tags.AddRange(new List<Tag>
 				{
 					new Tag("user input"),
 					new Tag("user interface"),
@@ -56,7 +57,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[]
+					new List<Tag>
 					{
 						FindTagByName(context, "user input"),
 						FindTagByName(context, "network"),
@@ -67,36 +68,36 @@ namespace BIRA_Issue_Tracker.Migrations
 					"00 birthday causes exception",
 					"Adding an author with a birth date which has day 00 will add the author with a birth date of the last day of the previous month.",
 					State.Open,
-					"admin@gmail.com",
-					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					"pesho@gmail.com",
+					"merry@gmail.com",
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
 					"negative birthday causes exception",
 					"Adding an author with a birth date the day of which is negative will add the author with a birth date which is the same but the day is non negative.",
 					State.Open,
-					"admin@gmail.com",
+					"merry@gmail.com",
 					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
 					"no last name causes exception",
 					"Adding an author with a valid first name andate, but no last name throws an unhandled exception \"Last name out of range\" insteaof validating the input before sending it.",
 					State.Open,
-					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					"admin@gmail.com",
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
 					"missing first name causes exception",
 					"Adding an author with a valid last name and date, but no first name throws an unhandled exception \"First name out of range\" instead of validating the input before sending it.",
 					State.Open,
-					"admin@gmail.com",
+					"pesho@gmail.com",
 					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -104,35 +105,35 @@ namespace BIRA_Issue_Tracker.Migrations
 					"If first name is too short, the system throws an unhandled exception \"First name out of range\" instead of validating the input before sending it.",
 					State.Open,
 					"admin@gmail.com",
-					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					"admin@gmail.com",
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
 					"short last name causes exception",
 					"If last name is too short, the system throws an unhandled exception \"Last name out of range\" instead of validating the input before sending it.",
 					State.Open,
-					"admin@gmail.com",
+					"merry@gmail.com",
 					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
 					"Wrong first name upper limit",
 					"First name upper limit is 239 characters instead of 240",
 					State.Open,
+					"merry@gmail.com",
 					"admin@gmail.com",
-					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
 					"Wrong last name upper limit",
 					"Last name upper limit is 237 characters instead of 240",
 					State.Open,
-					"admin@gmail.com",
 					"gosho@gmail.com",
-					new[] {FindTagByName(context, "user input"),}
+					"gosho@gmail.com",
+					new List<Tag> { FindTagByName(context, "user input"), }
 				);
 			}
 
@@ -141,7 +142,7 @@ namespace BIRA_Issue_Tracker.Migrations
 
 		private static Tag FindTagByName(IssueTrackerDbContext context, string name)
 		{
-			return context.Tags.Find(name);
+			return context.Tags.FirstOrDefault(a => a.Name == name);
 		}
 
 		private static void CreateUser(IssueTrackerDbContext context,
@@ -175,19 +176,29 @@ namespace BIRA_Issue_Tracker.Migrations
 		}
 
 		private static void CreateIssue(IssueTrackerDbContext context, string title, string description, State state,
-			string author, string assignee, IEnumerable<Tag> tags)
+			string author, string assignee, ICollection<Tag> tags)
 		{
+			var authorAsUser = context.Users.FirstOrDefault(u => u.UserName == author);
+			var assigneeAsUser = context.Users.FirstOrDefault(u => u.UserName == assignee);
+
 			var issue = new Issue
 			{
 				Title = title,
 				Description = description,
 				State = state,
-				Author = context.Users.FirstOrDefault(u => u.UserName == author),
-				Assignee = context.Users.FirstOrDefault(u => u.UserName == assignee),
+				Author = authorAsUser,
+				Assignee = assigneeAsUser,
+				Date = DateTime.Now,
 				Tags = tags
 			};
-
+			
 			context.Issues.Add(issue);
+			//var issueInDatabase = context.Issues.Find(issue.Id);
+
+			//foreach (var tag in tags)
+			//{
+			//	issueInDatabase.Tags.Add(tag);
+			//}
 		}
 
 		private void CreateRole(IssueTrackerDbContext context, string roleName)
