@@ -26,5 +26,22 @@ textarea {
 .navbar-brand {
 	background: url(../Images/BIRA_logo.png);
 	background-size: contain;
+	width: 6em;
+	height: 2.4em;
 	background-repeat: no-repeat;
+	background-position: center;
+	margin-top: 1px;
+	transition: transform 0.2s ease-out;
+}
+
+.navbar-brand:hover {
+	transform: scale(1.12);
+}
+
+div.navbar-collapse *{
+	transition: background 0.1s ease-out, color 0.1s ease-out;
+}
+
+div.navbar.navbar-default.navbar-fixed-top li > a:hover {
+	background: #ccc;
 }
