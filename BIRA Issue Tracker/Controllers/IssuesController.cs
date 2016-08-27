@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BIRA_Issue_Tracker.Models;
 using BIRA_Issue_Tracker.Models.IssueTracker;
+using Microsoft.AspNet.Identity;
 
 namespace BIRA_Issue_Tracker.Controllers
 {
@@ -47,8 +49,22 @@ namespace BIRA_Issue_Tracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Author,Assignee,State,Tags")] Issue issue)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,State")] Issue issue)
         {
+	        ModelState["Tags"].Errors.Clear();
+	        ModelState["Author"].Errors.Clear();
+	        ModelState["Tags"].Errors.Clear();
+
+			issue.Date = DateTime.Now;
+			issue.Author = db.Users.Find(User.Identity.GetUserId());
+
+			if (issue.Tags == null)
+	        {
+				issue.Tags = new List<Tag>();
+	        }
+
+	        TryValidateModel(issue);
+
             if (ModelState.IsValid)
             {
                 db.Issues.Add(issue);
