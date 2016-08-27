@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.navbar-brand {
+	background: url(../Images/BIRA_logo.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+}
