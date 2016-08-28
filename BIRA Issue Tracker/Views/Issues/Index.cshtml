@@ -7,7 +7,7 @@
 <h2>Issues</h2>
 
 <p>
-	@Html.ActionLink("Submit New", "Create", null, new {@class = "btn btn-success"})
+	@Html.ActionLink("Submit New", "New", null, new {@class = "btn btn-success"})
 </p>
 <table class="table">
 	<tr>
@@ -68,7 +68,6 @@
 			</td>
 			<td>
 				<div class="btn-group flex">
-					@*<a type="button" class="btn btn-danger" href="#">Action</a>*@
 					@Html.ActionLink("Details", "Details", new {id = item.Id}, new {@class = "btn btn-primary"})
 					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<span class="caret"></span>
@@ -76,7 +75,7 @@
 					</button>
 					<ul class="dropdown-menu">
 						<li>@Html.ActionLink("Edit", "Edit", new {id = item.Id})</li>
-						<li>@Html.ActionLink("Delete", "Delete", new {id = item.Id}, new {@class = ""})</li>
+						<li>@Html.ActionLink("Delete", "Delete", new {id = item.Id})</li>
 					</ul>
 				</div>
 			</td>

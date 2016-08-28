@@ -241,7 +241,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Issues\Create.cshtml" />
+    <Content Include="Views\Issues\New.cshtml" />
     <Content Include="Views\Issues\Delete.cshtml" />
     <Content Include="Views\Issues\Details.cshtml" />
     <Content Include="Views\Issues\Edit.cshtml" />

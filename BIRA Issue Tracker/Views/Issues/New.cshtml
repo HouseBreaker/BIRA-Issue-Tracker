@@ -1,10 +1,10 @@
 ﻿@model BIRA_Issue_Tracker.Models.IssueTracker.Issue
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Submit";
 }
 
-<h2>Create</h2>
+<h2>Submit new issue</h2>
 
 
 @using (Html.BeginForm()) 
@@ -38,14 +38,14 @@
                 @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+		
+		<div class="form-group">
+			@Html.LabelFor(model => model.Assignee, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("Assignee", ViewBag.Users as SelectList, "None", new {@class = "form-control"})
+				@Html.ValidationMessageFor(model => model.Assignee, "", new { @class = "text-danger" })
+			</div>
+		</div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

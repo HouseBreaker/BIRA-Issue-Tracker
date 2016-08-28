@@ -38,24 +38,30 @@ namespace BIRA_Issue_Tracker.Controllers
             return View(issue);
         }
 
-        // GET: Issues/Create
-        public ActionResult Create()
+        // GET: Issues/New
+        public ActionResult New()
         {
+	        var allUsers = new SelectList(db.Users.ToList());
+
+			ViewBag.Users = allUsers;
             return View();
         }
 
-        // POST: Issues/Create
+        // POST: Issues/New
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,State")] Issue issue)
+        public ActionResult New([Bind(Include = "Id,Title,Description,State")] Issue issue)
         {
+	        var assignee = Request["Assignee"];
+
 	        ModelState["Tags"].Errors.Clear();
 	        ModelState["Author"].Errors.Clear();
 
 			issue.Date = DateTime.Now;
 			issue.Author = db.Users.Find(User.Identity.GetUserId());
+	        issue.Assignee = db.Users.FirstOrDefault(a => a.UserName == assignee);
 
 			if (issue.Tags == null)
 	        {
