@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BIRA_Issue_Tracker.Extensions
@@ -44,8 +41,10 @@ namespace BIRA_Issue_Tracker.Extensions
 
 		public static IEnumerable<string> GetNotifications(this HtmlHelper htmlHelper, NotificationType notificationType)
 		{
-			string notificationKeyByType = GetNotificationKeyByType(notificationType);
-			return htmlHelper.ViewContext.Controller.TempData[notificationKeyByType] as ICollection<string>;
+			var notificationKeyByType = GetNotificationKeyByType(notificationType);
+			var notifications = htmlHelper.ViewContext.Controller.TempData[notificationKeyByType] as ICollection<string>;
+
+			return notifications ?? new string[0];
 		}
 
 		private static string GetNotificationKeyByType(NotificationType notificationType)
@@ -56,7 +55,7 @@ namespace BIRA_Issue_Tracker.Extensions
 			}
 			catch (IndexOutOfRangeException e)
 			{
-				ArgumentException exception = new ArgumentException("Key is invalid", nameof(notificationType), e);
+				var exception = new ArgumentException("Key is invalid", nameof(notificationType), e);
 				throw exception;
 			}
 		}

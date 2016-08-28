@@ -6,14 +6,14 @@
 	var successList = Html.GetNotifications(NotificationType.Success).ToArray();
 	var infoList = Html.GetNotifications(NotificationType.Info).ToArray();
 }
-<!-- display errors -->
-@if (errorList != null)
+@*display errors*@
+@if (errorList.Any())
 {
 	<div class="alert alert-danger alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		@if (errorList.Count() > 1)
+		@if (errorList.Length > 1)
 		{
-			<strong><span class="glyphicon glyphicon-remove"></span> There are @errorList.Count() errors: </strong>
+			<strong><span class="glyphicon glyphicon-remove"></span> There are @errorList.Length errors: </strong>
 			<ul>
 				@foreach (var message in errorList)
 				{
@@ -29,14 +29,14 @@
 	</div>
 }
 
-<!-- display warnings -->
-@if (warningList != null)
+@*display warnings*@
+@if (warningList.Any())
 {
 	<div class="alert alert-warning alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		@if (warningList.Count() > 1)
+		@if (warningList.Length > 1)
 		{
-			<strong><span class="glyphicon glyphicon-warning-sign"></span> There are @warningList.Count() warnings: </strong>
+			<strong><span class="glyphicon glyphicon-warning-sign"></span> There are @warningList.Length warnings: </strong>
 			<ul>
 				@foreach (var message in warningList)
 				{
@@ -52,14 +52,14 @@
 	</div>
 }
 
-<!-- display success -->
-@if (successList != null)
+@*display success*@
+@if (successList.Any())
 {
 	<div class="alert alert-success alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		@if (successList.Count() > 1)
+		@if (successList.Length > 1)
 		{
-			<strong><span class="glyphicon glyphicon-ok"></span> There are @successList.Count() successful notifications: </strong>
+			<strong><span class="glyphicon glyphicon-ok"></span> There are @successList.Length successful notifications: </strong>
 			<ul>
 				@foreach (var message in successList)
 				{
@@ -75,14 +75,14 @@
 	</div>
 }
 
-<!-- display success -->
-@if (infoList != null)
+@*display success*@
+@if (infoList.Any())
 {
 	<div class="alert alert-info alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		@if (infoList.Count() > 1)
+		@if (infoList.Length > 1)
 		{
-			<strong><span class="glyphicon glyphicon-info-sign"></span> There are @infoList.Count() notifications: </strong>
+			<strong><span class="glyphicon glyphicon-info-sign"></span> There are @infoList.Length notifications: </strong>
 			<ul>
 				@foreach (var message in infoList)
 				{
