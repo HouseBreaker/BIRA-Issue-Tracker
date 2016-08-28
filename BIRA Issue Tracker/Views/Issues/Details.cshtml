@@ -34,17 +34,38 @@
             @Html.DisplayFor(model => model.State)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
+		<dt>
+			@Html.DisplayNameFor(model => model.Date)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Date)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Author)
+		</dt>
 
+		<dd>
+			@Html.DisplayFor(model => model.Author.Email)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Assignee)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Assignee.Email)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Tags)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Tags)
+		</dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new {@class = "btn btn-danger"})
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
 </p>
