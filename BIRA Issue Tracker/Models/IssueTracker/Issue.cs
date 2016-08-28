@@ -16,6 +16,7 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		[StringLength(200)]
 		public string Title { get; set; }
 
+		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
 		[Required]

@@ -45,3 +45,7 @@ div.navbar-collapse *{
 div.navbar.navbar-default.navbar-fixed-top li > a:hover {
 	background: #ccc;
 }
+
+.flex {
+	display: flex;
+}
