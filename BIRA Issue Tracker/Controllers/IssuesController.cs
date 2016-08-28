@@ -53,7 +53,6 @@ namespace BIRA_Issue_Tracker.Controllers
         {
 	        ModelState["Tags"].Errors.Clear();
 	        ModelState["Author"].Errors.Clear();
-	        ModelState["Tags"].Errors.Clear();
 
 			issue.Date = DateTime.Now;
 			issue.Author = db.Users.Find(User.Identity.GetUserId());
@@ -82,7 +81,7 @@ namespace BIRA_Issue_Tracker.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Issue issue = db.Issues.Find(id);
+            Issue issue = db.Issues.AsNoTracking().First(a => a.Id == id);
             if (issue == null)
             {
                 return HttpNotFound();
@@ -97,6 +96,19 @@ namespace BIRA_Issue_Tracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,Description,State,Author,Assignee,Date,Tags")] Issue issue)
         {
+	        var oldIssue = db.Issues.AsNoTracking().First(a => a.Id == issue.Id);
+
+	        oldIssue.Title = issue.Title;
+	        oldIssue.Description = issue.Description;
+	        oldIssue.State = issue.State;
+
+			issue = oldIssue;
+
+			ModelState["Author"].Errors.Clear();
+			ModelState["Tags"].Errors.Clear();
+
+	        TryValidateModel(issue);
+
             if (ModelState.IsValid)
             {
                 db.Entry(issue).State = EntityState.Modified;
