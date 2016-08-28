@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BIRA_Issue_Tracker.Extensions;
 using BIRA_Issue_Tracker.Models;
 using BIRA_Issue_Tracker.Models.IssueTracker;
 using Microsoft.AspNet.Identity;
@@ -145,6 +146,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			{
 				db.Entry(issue).State = EntityState.Modified;
 				db.SaveChanges();
+				this.AddNotification("Edited issue successfully!", NotificationType.Success);
 				return RedirectToAction("Index");
 			}
 			return View(issue);
