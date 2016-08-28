@@ -1,25 +1,71 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
 
+<div class="jumbotron">
+	<div class="jumbo-logo center-block text-center">
+		<img src="../../Images/BIRA_Logo.png" alt="BIRA Logo" class="jumbo-logo img-responsive "/>
+	</div>
+
+	<blockquote class="text-center">
+		<i>Everyone has issues. We just happen to track them...</i>
+	</blockquote>
+
+	@if (!Request.IsAuthenticated)
+	{
+		<div class="text-center">
+			<div>
+				<h3>Join us now!</h3>
+				<div>@Html.ActionLink("Register", "Register", "Account", null, new {@class = "btn btn-success btn-lg"})</div>
+			</div>
+
+			<div>
+				<h5>Already have an account?</h5>
+				<div>@Html.ActionLink("Log in", "Login", "Account", null, new {@class = "btn btn-default btn-md"})</div>
+			</div>
+		</div>
+	}
+</div>
+
+
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+	@if (Request.IsAuthenticated)
+	{
+		<div class="col-md-3">
+			<h2>Issues</h2>
+			<p>Manage your account</p>
+			<p>
+				@Html.ActionLink("Submit New", "Create", "Issues", null, new {@class = "btn btn-primary"})
+			</p>
+		</div>
+		<div class="col-md-3">
+			<h2>Account management</h2>
+			<p>Manage your account</p>
+			<p>
+				@Html.ActionLink("Manage account", "Index", "Manage", null, new {@class = "btn btn-default"})
+			</p>
+		</div>
+	}
+
+	@{
+		var columnSize = Request.IsAuthenticated ? "3" : "4";
+		var secondColumnSize = Request.IsAuthenticated ? "3" : "4 col-md-offset-2";
+	}
+
+	<div class="col-md-@columnSize">
+		<h2>All issues</h2>
+		<p>
+			Get acquainted with the current issues in the system
+		</p>
+		<p>
+			@Html.ActionLink("View All Issues", "Index", "Issues", null, new {@class = "btn btn-default"})
+		</p>
+	</div>
+	<div class="col-md-@secondColumnSize">
+		<h2>View tags</h2>
+		<p>Check out how people are categorizing their issues.</p>
+		<p>
+			@Html.ActionLink("View Tags", "Index", "Tags", null, new {@class = "btn btn-default"})
+		</p>
+	</div>
 </div>

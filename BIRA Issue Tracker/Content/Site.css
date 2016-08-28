@@ -1,4 +1,6 @@
-﻿body {
+﻿@import 'https://fonts.googleapis.com/css?family=Caveat';
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -48,4 +50,19 @@ div.navbar.navbar-default.navbar-fixed-top li > a:hover {
 
 .flex {
 	display: flex;
+}
+
+.jumbotron {
+	margin-top: 1em;
+}
+
+.jumbo-logo {
+	display: block;
+	width: 78%;
+	margin: 0 auto;
+}
+
+blockquote {
+	font-family: Caveat;
+	font-size: 1.5em;
 }
