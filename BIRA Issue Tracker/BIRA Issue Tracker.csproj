@@ -177,7 +177,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Identity\AccountViewModels.cs" />
     <Compile Include="Models\IssueTrackerDbContext.cs" />
-    <Compile Include="Models\Identity\IdentityModels.cs" />
+    <Compile Include="Models\Identity\ApplicationUser.cs" />
     <Compile Include="Models\Identity\ManageViewModels.cs" />
     <Compile Include="Models\IssueTracker\Issue.cs" />
     <Compile Include="Models\IssueTracker\State.cs" />
