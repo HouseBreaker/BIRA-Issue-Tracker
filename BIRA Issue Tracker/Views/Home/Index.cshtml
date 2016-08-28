@@ -1,5 +1,5 @@
 ﻿@{
-	ViewBag.Title = "Home Page";
+	ViewBag.Title = Request.IsAuthenticated ? "Dashboard" : "BIRA Issue Tracker";
 }
 
 <div class="jumbotron">
@@ -33,13 +33,13 @@
 	{
 		<div class="col-md-3">
 			<h2>Issues</h2>
-			<p>Manage your account</p>
+			<p>Submit an issue</p>
 			<p>
 				@Html.ActionLink("Submit New", "Create", "Issues", null, new {@class = "btn btn-primary"})
 			</p>
 		</div>
 		<div class="col-md-3">
-			<h2>Account management</h2>
+			<h2>Account</h2>
 			<p>Manage your account</p>
 			<p>
 				@Html.ActionLink("Manage account", "Index", "Manage", null, new {@class = "btn btn-default"})
@@ -49,19 +49,20 @@
 
 	@{
 		var columnSize = Request.IsAuthenticated ? "3" : "4";
-		var secondColumnSize = Request.IsAuthenticated ? "3" : "4 col-md-offset-2";
+		var offset = Request.IsAuthenticated ? string.Empty : " col-md-offset-2";
+
 	}
 
-	<div class="col-md-@columnSize">
+	<div class="col-md-@columnSize@offset">
 		<h2>All issues</h2>
 		<p>
-			Get acquainted with the current issues in the system
+			Get acquainted with the current issues
 		</p>
 		<p>
 			@Html.ActionLink("View All Issues", "Index", "Issues", null, new {@class = "btn btn-default"})
 		</p>
 	</div>
-	<div class="col-md-@secondColumnSize">
+	<div class="col-md-@columnSize">
 		<h2>View tags</h2>
 		<p>Check out how people are categorizing their issues.</p>
 		<p>
