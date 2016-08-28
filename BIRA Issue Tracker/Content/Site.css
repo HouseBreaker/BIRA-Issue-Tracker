@@ -33,6 +33,7 @@ textarea {
 	background-repeat: no-repeat;
 	background-position: center;
 	margin-top: 1px;
+	margin-right: 5px;
 	transition: transform 0.2s ease-out;
 }
 
@@ -58,7 +59,7 @@ div.navbar.navbar-default.navbar-fixed-top li > a:hover {
 
 .jumbo-logo {
 	display: block;
-	width: 78%;
+	width: 75%;
 	margin: 0 auto;
 }
 

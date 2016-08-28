@@ -102,19 +102,11 @@ namespace BIRA_Issue_Tracker.Controllers
 
 			if (!UserAuthorizedToEdit(issue))
 			{
+				this.AddNotification("You're not authorized to edit this issue! Please log in.", NotificationType.Error);
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
 			return View(issue);
-		}
-
-		private bool UserAuthorizedToEdit(Issue issue)
-		{
-			// user should not edit others' issues unless they're an admin
-			var isOwnIssue = User.Identity.GetUserId() == issue.Author.Id;
-
-			var authorizedToEdit = isOwnIssue || User.IsInRole("Administrators");
-			return authorizedToEdit;
 		}
 
 		// POST: Issues/Edit/5
@@ -139,6 +131,7 @@ namespace BIRA_Issue_Tracker.Controllers
 
 			if (!UserAuthorizedToEdit(issue))
 			{
+				this.AddNotification("You're not authorized to edit this issue! Please log in.", NotificationType.Error);
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
@@ -188,6 +181,15 @@ namespace BIRA_Issue_Tracker.Controllers
 			db.Issues.Remove(issue);
 			db.SaveChanges();
 			return RedirectToAction("Index");
+		}
+
+		private bool UserAuthorizedToEdit(Issue issue)
+		{
+			// user should not edit others' issues unless they're an admin
+			var isOwnIssue = User.Identity.GetUserId() == issue.Author.Id;
+
+			var authorizedToEdit = isOwnIssue || User.IsInRole("Administrators");
+			return authorizedToEdit;
 		}
 
 		protected override void Dispose(bool disposing)
