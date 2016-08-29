@@ -24,6 +24,14 @@ namespace BIRA_Issue_Tracker.Controllers
 			return View(db.Issues.ToList());
 		}
 
+		// GET: Issues/Mine
+		public ActionResult Mine()
+		{
+			var currentUserId = User.Identity.GetUserId();
+			var currentUserIssues = db.Issues.Where(i => i.Assignee.Id == currentUserId).ToList();
+			return View(currentUserIssues);
+		}
+
 		// GET: Issues/Details/5
 		public ActionResult Details(int? id)
 		{
@@ -160,6 +168,7 @@ namespace BIRA_Issue_Tracker.Controllers
 
 			if (!UserAuthorizedToEdit(issue))
 			{
+				this.AddNotification("You're not authorized to edit this issue! Please log in.", NotificationType.Error);
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
@@ -175,6 +184,7 @@ namespace BIRA_Issue_Tracker.Controllers
 
 			if (!UserAuthorizedToEdit(issue))
 			{
+				this.AddNotification("You're not authorized to edit this issue! Please log in.", NotificationType.Error);
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
