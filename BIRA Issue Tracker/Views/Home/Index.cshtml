@@ -7,9 +7,25 @@
 		<img src="../../Images/BIRA_Logo.png" alt="BIRA Logo" class="jumbo-logo img-responsive "/>
 	</div>
 
-	<blockquote class="text-center">
-		<i>Everyone has issues. We just happen to track them...</i>
-	</blockquote>
+	@if (!Request.IsAuthenticated)
+	{
+		<blockquote class="text-center">
+			<i>Everyone has issues. We just happen to track them...</i>
+		</blockquote>
+	}
+	else
+	{
+		string username = ViewBag.Username;
+		
+		int numberOfIssues = ViewBag.UnresolvedIssuesCount;
+
+		int userAssignedIssuesCount = ViewBag.UserAssignedUnresolvedIssuesCount;
+		var userAssignedIssuesText = userAssignedIssuesCount == 0 ? "none" : $"<a href=\"/Issues/Mine\">{userAssignedIssuesCount}</a>";
+
+		var workOrRest = userAssignedIssuesCount > 0 ? "get to work" : "take a break";
+		<h3 class="text-center">Hey there @username! Time to @workOrRest!</h3>
+		<h4 class="text-center"><i>There are @numberOfIssues open issues and @Html.Raw(userAssignedIssuesText) of them are assigned to you.</i></h4>
+	}
 
 	@if (!Request.IsAuthenticated)
 	{
@@ -50,7 +66,6 @@
 	@{
 		var columnSize = Request.IsAuthenticated ? "3" : "4";
 		var offset = Request.IsAuthenticated ? string.Empty : " col-md-offset-2";
-
 	}
 
 	<div class="col-md-@columnSize@offset">
@@ -64,7 +79,7 @@
 	</div>
 	<div class="col-md-@columnSize">
 		<h2>View tags</h2>
-		<p>Check out how people are categorizing their issues.</p>
+		<p>Check out how issues are categorized.</p>
 		<p>
 			@Html.ActionLink("View Tags", "Index", "Tags", null, new {@class = "btn btn-default"})
 		</p>
