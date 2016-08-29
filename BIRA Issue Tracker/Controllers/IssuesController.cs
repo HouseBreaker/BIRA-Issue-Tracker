@@ -28,10 +28,9 @@ namespace BIRA_Issue_Tracker.Controllers
 		// GET: Tagged
 		public ActionResult Tagged()
 		{
-			var tag = HttpUtility.UrlDecode(Request.Url.Segments.Last());
+			var slug = HttpUtility.UrlDecode(Request.Url.Segments.Last());
 			
-			// todo: replace with slug
-			var issuesWithTag = db.Issues.Where(i => i.Tags.Any(b => b.Name == tag)).ToArray();
+			var issuesWithTag = db.Issues.Where(i => i.Tags.Any(b => b.Slug == slug)).ToArray();
 
 			if (!issuesWithTag.Any())
 			{
@@ -39,15 +38,23 @@ namespace BIRA_Issue_Tracker.Controllers
 				return this.RedirectToAction("Index", "Issues");
 			}
 
-			ViewBag.TagName = tag;
+			ViewBag.TagName = slug;
 			return View(issuesWithTag);
+		}
+
+		// GET: Issues/AssignedToMe
+		public ActionResult AssignedToMe()
+		{
+			var currentUserId = User.Identity.GetUserId();
+			var currentUserIssues = db.Issues.Where(i => i.Assignee.Id == currentUserId).ToList();
+			return View(currentUserIssues);
 		}
 
 		// GET: Issues/Mine
 		public ActionResult Mine()
 		{
 			var currentUserId = User.Identity.GetUserId();
-			var currentUserIssues = db.Issues.Where(i => i.Assignee.Id == currentUserId).ToList();
+			var currentUserIssues = db.Issues.Where(i => i.Author.Id == currentUserId).ToList();
 			return View(currentUserIssues);
 		}
 
@@ -56,12 +63,14 @@ namespace BIRA_Issue_Tracker.Controllers
 		{
 			if (id == null)
 			{
+				this.AddNotification("Invalid ID", NotificationType.Error);
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 
 			var issue = db.Issues.Find(id);
 			if (issue == null)
 			{
+				this.AddNotification("Couldn't find that issue", NotificationType.Error);
 				return HttpNotFound();
 			}
 
@@ -121,6 +130,8 @@ namespace BIRA_Issue_Tracker.Controllers
 			{
 				db.Issues.Add(issue);
 				db.SaveChanges();
+
+				this.AddNotification("Issue created.", NotificationType.Success);
 				return RedirectToAction("Index");
 			}
 
@@ -148,6 +159,7 @@ namespace BIRA_Issue_Tracker.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
+			ViewBag.IsOwnIssue = UserCreatedIssue(issue);
 			return View(issue);
 		}
 
@@ -166,6 +178,8 @@ namespace BIRA_Issue_Tracker.Controllers
 
 			issue = oldIssue;
 
+			ViewBag.IsOwnIssue = UserCreatedIssue(issue);
+
 			ModelState["Author"].Errors.Clear();
 			ModelState["Tags"].Errors.Clear();
 
@@ -181,7 +195,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			{
 				db.Entry(issue).State = EntityState.Modified;
 				db.SaveChanges();
-				this.AddNotification("Edited issue successfully!", NotificationType.Success);
+				this.AddNotification("Edited issue!", NotificationType.Success);
 				return RedirectToAction("Index");
 			}
 			return View(issue);
@@ -221,19 +235,41 @@ namespace BIRA_Issue_Tracker.Controllers
 				this.AddNotification("You're not authorized to edit this issue! Please log in.", NotificationType.Error);
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
+			
+			foreach (var tag in issue.Tags.ToList())
+			{
+				if (tag.Issues.Count == 1)
+				{
+					db.Tags.Remove(tag);
+				}
+			}
 
 			db.Issues.Remove(issue);
 			db.SaveChanges();
+
+			this.AddNotification($"Issue \"{issue.Title}\" was deleted.", NotificationType.Success);
 			return RedirectToAction("Index");
 		}
 
 		private bool UserAuthorizedToEdit(Issue issue)
 		{
 			// user should not edit others' issues unless they're an admin
-			var isOwnIssue = User.Identity.GetUserId() == issue.Author.Id;
-
-			var authorizedToEdit = isOwnIssue || User.IsInRole("Administrators");
+			var isOwnIssue = UserCreatedIssue(issue);
+			var isAdmin = User.IsInRole("Administrators");
+			var isAssignedIssue = UserIsAssignedIssue(issue);
+		
+			var authorizedToEdit = isOwnIssue || isAssignedIssue || isAdmin;
 			return authorizedToEdit;
+		}
+
+		private bool UserCreatedIssue(Issue issue)
+		{
+			return User.Identity.GetUserId() == issue.Author.Id;
+		}
+
+		private bool UserIsAssignedIssue(Issue issue)
+		{
+			return User.Identity.GetUserId() == issue.Assignee.Id;
 		}
 
 		protected override void Dispose(bool disposing)

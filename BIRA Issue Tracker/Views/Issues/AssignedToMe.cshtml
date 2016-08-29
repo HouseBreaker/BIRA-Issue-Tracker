@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<BIRA_Issue_Tracker.Models.IssueTracker.Issue>
 
 @{
-	ViewBag.Title = "My issues";
+	ViewBag.Title = "Assigned to me";
 }
 
-<h2>My issues</h2>
+<h2>Assigned to me</h2>
 
 <p>
 	@Html.ActionLink("Submit New", "New", null, new {@class = "btn btn-success"})
-	@Html.ActionLink("Assigned to me", "AssignedToMe", null, new { @class = "btn btn-primary" })
+	@Html.ActionLink("My issues", "Mine", null, new { @class = "btn btn-primary" })
 </p>
 <table class="table table-striped">
 	<tr>
@@ -63,8 +63,14 @@
 			<td>
 				@if (item.Tags != null)
 				{
-					var tags = string.Join(", ", item.Tags);
-					@tags
+					var tagLinks = new List<string>();
+					foreach (var tag in item.Tags)
+					{
+						tagLinks.Add(Html.ActionLink(tag.Name, $"Tagged/{tag.Slug}").ToHtmlString());
+					}
+
+					var tagsHtml = string.Join(", ", tagLinks);
+					@Html.Raw(tagsHtml);
 				}
 			</td>
 			<td>

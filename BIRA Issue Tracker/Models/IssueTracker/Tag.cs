@@ -31,7 +31,7 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 
 		private static string GenerateSlug(string name)
 		{
-			return Regex.Replace(name, @"[^a-zA-Zа-яА-Я\d]+", "-").ToLowerInvariant();
+			return Regex.Replace(name, @"[^a-zA-Zа-яА-Я\#\+\d]+", "-").ToLowerInvariant();
 		}
 
 		public override string ToString()

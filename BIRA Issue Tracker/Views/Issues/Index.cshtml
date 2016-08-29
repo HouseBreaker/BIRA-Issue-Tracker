@@ -8,9 +8,11 @@
 <h2>Issues</h2>
 
 <p>
-	@Html.ActionLink("Submit New", "New", null, new {@class = "btn btn-success"})
+	@Html.ActionLink("Submit New", "New", null, new { @class = "btn btn-success" })
+	@Html.ActionLink("My issues", "Mine", null, new { @class = "btn btn-primary" })
+	@Html.ActionLink("Assigned to me", "AssignedToMe", null, new {@class = "btn btn-primary"})
 </p>
-<table class="table">
+<table class="table table-striped">
 	<tr>
 		<th>
 			@Html.DisplayNameFor(model => model.Title)
@@ -34,7 +36,7 @@
 			@Html.DisplayNameFor(model => model.Tags)
 		</th>
 		<th>
-			Actions
+			
 		</th>
 	</tr>
 
@@ -63,6 +65,7 @@
 			<td>
 				@if (item.Tags != null)
 				{
+
 					var tags = string.Join(", ", item.Tags);
 					@tags
 				}
