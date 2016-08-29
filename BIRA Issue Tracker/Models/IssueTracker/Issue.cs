@@ -23,12 +23,12 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		public State State { get; set; }
 
 		[Required]
-		public virtual ICollection<Tag> Tags { get; set; }
-
-		[Required]
 		public virtual ApplicationUser Author { get; set; }
 		
 		public virtual ApplicationUser Assignee { get; set; }
+
+		[Required]
+		public virtual ICollection<Tag> Tags { get; set; }
 
 		[Required]
 		public DateTime Date { get; set; }

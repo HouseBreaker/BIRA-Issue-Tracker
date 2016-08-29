@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace BIRA_Issue_Tracker.Models.IssueTracker
 {
@@ -8,6 +9,7 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		public Tag(string name)
 		{
 			this.Name = name;
+			this.Slug = GenerateSlug(name);
 		}
 
 		public Tag()
@@ -21,7 +23,16 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		[StringLength(30)]
 		public string Name { get; set; }
 
+		[Required]
+		[StringLength(30)]
+		public string Slug { get; set; }
+
 		public virtual ICollection<Issue> Issues { get; set; }
+
+		private static string GenerateSlug(string name)
+		{
+			return Regex.Replace(name, @"[^a-zA-Zа-яА-Я\d]+", "-").ToLowerInvariant();
+		}
 
 		public override string ToString()
 		{

@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using BIRA_Issue_Tracker.Extensions;
@@ -86,7 +87,10 @@ namespace BIRA_Issue_Tracker.Controllers
 		public ActionResult New([Bind(Include = "Id,Title,Description,State")] Issue issue)
 		{
 			var assignee = Request["Assignee"];
+			var tagsRequest = Request["Tags"];
 
+			var tags = tagsRequest.Split(',').Select(a => a.Trim()).ToArray();
+			
 			ModelState["Tags"].Errors.Clear();
 			ModelState["Author"].Errors.Clear();
 
@@ -94,9 +98,21 @@ namespace BIRA_Issue_Tracker.Controllers
 			issue.Author = db.Users.Find(User.Identity.GetUserId());
 			issue.Assignee = db.Users.FirstOrDefault(a => a.UserName == assignee);
 
-			if (issue.Tags == null)
+			issue.Tags = new HashSet<Tag>();
+			foreach (var tagName in tags)
 			{
-				issue.Tags = new List<Tag>();
+				Tag tag;
+				if (db.Tags.Any(a => a.Name == tagName))
+				{
+					tag = db.Tags.FirstOrDefault(a => a.Name == tagName);
+					issue.Tags.Add(tag);
+				}
+				else
+				{
+					tag = new Tag(tagName);
+				}
+
+				issue.Tags.Add(tag);
 			}
 
 			TryValidateModel(issue);

@@ -36,7 +36,7 @@ namespace BIRA_Issue_Tracker.Migrations
 
 			if (!context.Tags.Any())
 			{
-				context.Tags.AddRange(new List<Tag>
+				context.Tags.AddRange(new HashSet<Tag>
 				{
 					new Tag("user input"),
 					new Tag("user interface"),
@@ -57,7 +57,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new List<Tag>
+					new HashSet<Tag>
 					{
 						FindTagByName(context, "user input"),
 						FindTagByName(context, "network"),
@@ -70,7 +70,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"pesho@gmail.com",
 					"merry@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -79,7 +79,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"merry@gmail.com",
 					"gosho@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -88,7 +88,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"gosho@gmail.com",
 					"admin@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -97,7 +97,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"pesho@gmail.com",
 					"gosho@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -106,7 +106,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"admin@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -115,7 +115,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"merry@gmail.com",
 					"gosho@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -124,7 +124,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"merry@gmail.com",
 					"admin@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 
 				CreateIssue(context,
@@ -133,7 +133,7 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"gosho@gmail.com",
 					"gosho@gmail.com",
-					new List<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(context, "user input"), }
 				);
 			}
 
@@ -176,7 +176,7 @@ namespace BIRA_Issue_Tracker.Migrations
 		}
 
 		private static void CreateIssue(IssueTrackerDbContext context, string title, string description, State state,
-			string author, string assignee, ICollection<Tag> tags)
+			string author, string assignee, ISet<Tag> tags)
 		{
 			var authorAsUser = context.Users.FirstOrDefault(u => u.UserName == author);
 			var assigneeAsUser = context.Users.FirstOrDefault(u => u.UserName == assignee);
