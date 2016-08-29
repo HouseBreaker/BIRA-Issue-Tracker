@@ -24,6 +24,24 @@ namespace BIRA_Issue_Tracker.Controllers
 			return View(db.Issues.ToList());
 		}
 
+		// GET: Tagged
+		public ActionResult Tagged()
+		{
+			var tag = HttpUtility.UrlDecode(Request.Url.Segments.Last());
+			
+			// todo: replace with slug
+			var issuesWithTag = db.Issues.Where(i => i.Tags.Any(b => b.Name == tag)).ToArray();
+
+			if (!issuesWithTag.Any())
+			{
+				this.AddNotification("Couldn't find any issues with that tag.", NotificationType.Warning);
+				return this.RedirectToAction("Index", "Issues");
+			}
+
+			ViewBag.TagName = tag;
+			return View(issuesWithTag);
+		}
+
 		// GET: Issues/Mine
 		public ActionResult Mine()
 		{

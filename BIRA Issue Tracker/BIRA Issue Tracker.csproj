@@ -255,6 +255,7 @@
     <Content Include="Views\Tags\Edit.cshtml" />
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Issues\Mine.cshtml" />
+    <Content Include="Views\Issues\Tagged.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
