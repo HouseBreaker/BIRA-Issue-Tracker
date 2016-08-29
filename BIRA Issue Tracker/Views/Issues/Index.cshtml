@@ -69,7 +69,7 @@
 			</td>
 			<td>
 				@{
-					var issueBelongsToUser = item.Assignee.Id == User.Identity.GetUserId() || User.IsInRole("Administrators");
+					var issueBelongsToUser = item.Assignee.Id == User.Identity.GetUserId() || item.Author.Id == User.Identity.GetUserId() || User.IsInRole("Administrators");
 					var disabledButtonClass = issueBelongsToUser ? string.Empty : "disabled";
 				}
 				<div class="btn-group flex">
