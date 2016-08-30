@@ -1,0 +1,109 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<BIRA_Issue_Tracker.Models.IssueTracker.Issue>
+
+@functions
+{
+	private string CurrentActionName()
+	{
+		return ViewContext.RouteData.Values["action"].ToString();
+	}
+}
+
+<table class="table table-striped">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Title)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Description)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.State)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Author)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Assignee)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Date)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Tags)
+		</th>
+		<th>
+
+		</th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Title)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Description)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.State)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Author.Email)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Assignee.Email)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Date)
+			</td>
+
+			<td>
+				@if (item.Tags != null)
+				{
+					var tagLinks = new List<string>();
+					foreach (var tag in item.Tags)
+					{
+						tagLinks.Add(Html.ActionLink(tag.Name, "Tagged", "Issues", new {id = tag.Slug}, null).ToHtmlString());
+					}
+
+					var tagsHtml = string.Join(", ", tagLinks);
+					@Html.Raw(tagsHtml)
+				}
+			</td>
+			<td>
+				@{
+					var userIsAssignedIssue = item.Assignee.Id == User.Identity.GetUserId();
+					var userIsAuthor = item.Author.Id == User.Identity.GetUserId();
+					var userAuthorizedToEdit = userIsAssignedIssue || userIsAuthor || User.IsInRole("Administrators");
+
+					var disabledButtonClass = userAuthorizedToEdit ? string.Empty : "disabled";
+				}
+				<div class="btn-group flex">
+					@Html.ActionLink("Details", "Details", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, new {@class = "btn btn-primary"})
+					<button type="button" class="btn btn-primary dropdown-toggle @disabledButtonClass" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					@if (userAuthorizedToEdit)
+					{
+						<ul class="dropdown-menu">
+
+							@{
+								var linkText = userIsAssignedIssue && !userIsAuthor ? "Change state" : "Edit";
+							}
+
+							<li>@Html.ActionLink(linkText, "Edit", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, null)</li>
+
+							@if (userIsAuthor)
+							{
+								<li>@Html.ActionLink("Delete", "Delete", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, null)</li>
+							}
+						</ul>
+					}
+				</div>
+			</td>
+		</tr>
+	}
+</table>

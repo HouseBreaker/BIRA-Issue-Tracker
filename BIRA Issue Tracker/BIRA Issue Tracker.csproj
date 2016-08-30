@@ -257,6 +257,7 @@
     <Content Include="Views\Issues\AssignedToMe.cshtml" />
     <Content Include="Views\Issues\Tagged.cshtml" />
     <Content Include="Views\Issues\Mine.cshtml" />
+    <Content Include="Views\Shared\_TablePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

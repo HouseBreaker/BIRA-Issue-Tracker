@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 using BIRA_Issue_Tracker.Extensions;
 using BIRA_Issue_Tracker.Models;
 using BIRA_Issue_Tracker.Models.IssueTracker;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 
 namespace BIRA_Issue_Tracker.Controllers
@@ -26,16 +23,21 @@ namespace BIRA_Issue_Tracker.Controllers
 		}
 
 		// GET: Tagged
-		public ActionResult Tagged()
+		public ActionResult Tagged(string id)
 		{
-			var slug = HttpUtility.UrlDecode(Request.Url.Segments.Last());
-			
+			var slug = id;
+			if (slug.IsNullOrWhiteSpace())
+			{
+				this.AddNotification("Couldn't find that tag.", NotificationType.Error);
+				return HttpNotFound();
+			}
+
 			var issuesWithTag = db.Issues.Where(i => i.Tags.Any(b => b.Slug == slug)).ToArray();
 
 			if (!issuesWithTag.Any())
 			{
 				this.AddNotification("Couldn't find any issues with that tag.", NotificationType.Warning);
-				return this.RedirectToAction("Index", "Issues");
+				return RedirectToAction("Index", "Issues");
 			}
 
 			ViewBag.TagName = slug;
@@ -43,6 +45,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		}
 
 		// GET: Issues/AssignedToMe
+		[Authorize]
 		public ActionResult AssignedToMe()
 		{
 			var currentUserId = User.Identity.GetUserId();
@@ -51,6 +54,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		}
 
 		// GET: Issues/Mine
+		[Authorize]
 		public ActionResult Mine()
 		{
 			var currentUserId = User.Identity.GetUserId();
@@ -59,7 +63,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		}
 
 		// GET: Issues/Details/5
-		public ActionResult Details(int? id)
+		public ActionResult Details(int? id, string returnTo = "Index")
 		{
 			if (id == null)
 			{
@@ -74,6 +78,7 @@ namespace BIRA_Issue_Tracker.Controllers
 				return HttpNotFound();
 			}
 
+			ViewBag.ReturnTo = returnTo;
 			return View(issue);
 		}
 
@@ -93,7 +98,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize]
-		public ActionResult New([Bind(Include = "Id,Title,Description,State")] Issue issue)
+		public ActionResult New([Bind(Include = "Id,Title,Description,State")] Issue issue, string returnTo = "Index")
 		{
 			var assignee = Request["Assignee"];
 			var tagsRequest = Request["Tags"];
@@ -132,14 +137,14 @@ namespace BIRA_Issue_Tracker.Controllers
 				db.SaveChanges();
 
 				this.AddNotification("Issue created.", NotificationType.Success);
-				return RedirectToAction("Index");
+				return RedirectToAction(returnTo);
 			}
 
 			return View(issue);
 		}
 
 		// GET: Issues/Edit/5
-		public ActionResult Edit(int? id)
+		public ActionResult Edit(int? id, string returnTo = "Index")
 		{
 			if (id == null)
 			{
@@ -160,6 +165,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			}
 
 			ViewBag.IsOwnIssue = UserCreatedIssue(issue);
+			ViewBag.ReturnTo = returnTo;
 			return View(issue);
 		}
 
@@ -168,18 +174,29 @@ namespace BIRA_Issue_Tracker.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit([Bind(Include = "Id,Title,Description,State,Author,Assignee,Date,Tags")] Issue issue)
+		public ActionResult Edit([Bind(Include = "Id,Title,Description,State,Author,Assignee,Date,Tags")] Issue issue, string returnTo = "Index")
 		{
 			var oldIssue = db.Issues.AsNoTracking().First(a => a.Id == issue.Id);
 
-			oldIssue.Title = issue.Title;
-			oldIssue.Description = issue.Description;
-			oldIssue.State = issue.State;
+			if (UserCreatedIssue(oldIssue))
+			{
+				oldIssue.Title = issue.Title;
+				oldIssue.Description = issue.Description;
+			}
+			else
+			{
+				issue.Title = oldIssue.Title;
+				issue.Description = oldIssue.Description;
 
+				ModelState["Title"].Errors.Clear();
+			}
+			
+			oldIssue.State = issue.State;
+			
 			issue = oldIssue;
 
 			ViewBag.IsOwnIssue = UserCreatedIssue(issue);
-
+			
 			ModelState["Author"].Errors.Clear();
 			ModelState["Tags"].Errors.Clear();
 
@@ -196,13 +213,13 @@ namespace BIRA_Issue_Tracker.Controllers
 				db.Entry(issue).State = EntityState.Modified;
 				db.SaveChanges();
 				this.AddNotification("Edited issue!", NotificationType.Success);
-				return RedirectToAction("Index");
+				return RedirectToAction(returnTo);
 			}
 			return View(issue);
 		}
-
+		 
 		// GET: Issues/Delete/5
-		public ActionResult Delete(int? id)
+		public ActionResult Delete(int? id, string returnTo = "Index")
 		{
 			if (id == null)
 			{
@@ -220,13 +237,14 @@ namespace BIRA_Issue_Tracker.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
+			ViewBag.ReturnTo = returnTo;
 			return View(issue);
 		}
 
 		// POST: Issues/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public ActionResult DeleteConfirmed(int id)
+		public ActionResult DeleteConfirmed(int id, string returnTo = "Index")
 		{
 			var issue = db.Issues.Find(id);
 
@@ -248,7 +266,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			db.SaveChanges();
 
 			this.AddNotification($"Issue \"{issue.Title}\" was deleted.", NotificationType.Success);
-			return RedirectToAction("Index");
+			return RedirectToAction(returnTo);
 		}
 
 		private bool UserAuthorizedToEdit(Issue issue)
