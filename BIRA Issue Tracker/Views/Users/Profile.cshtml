@@ -1,0 +1,56 @@
+﻿@using System.Collections
+@using BIRA_Issue_Tracker.Models.IssueTracker
+@model BIRA_Issue_Tracker.Models.Identity.ApplicationUser
+@{
+	ViewBag.Title = $"{Model.Email} - Profile";
+}
+<div>
+	<h3>Profile - @Model.FullName</h3>
+	<hr />
+	<dl class="dl-horizontal col-md-6">
+		<dt>
+			@Html.DisplayNameFor(model => model.FullName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.FullName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Email)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Email)
+		</dd>
+
+		<dt>
+			Issues Created
+		</dt>
+
+		<dd>
+			<div class="list-group">
+				@foreach (var issue in (IEnumerable<Issue>)ViewBag.CreatedIssues)
+				{
+					@Html.ActionLink(issue.Title, "Details", "Issues", new { id = issue.Id }, new { @class = "list-group-item" })
+				}
+			</div>
+		</dd>
+
+		<dt>
+			Assigned issues
+		</dt>
+
+		<dd>
+			<ul class="list-group">
+				@foreach (var issue in (IEnumerable<Issue>)ViewBag.AssignedIssues)
+				{
+					@Html.ActionLink(issue.Title, "Details", "Issues", new { id = issue.Id }, new { @class = "list-group-item" })
+				}
+			</ul>
+		</dd>
+	</dl>
+</div>
+<p>
+	@Html.ActionLink("Back to List", "Index")
+</p>

@@ -2,10 +2,10 @@
 @model IEnumerable<BIRA_Issue_Tracker.Models.IssueTracker.Issue>
 
 @{
-	ViewBag.Title = "Assigned to me";
+	ViewBag.Title = "My issues";
 }
 
-<h2>Issues, assigned to me</h2>
+<h2>My Issues</h2>
 
 <p>
 	@Html.ActionLink("Submit New", "New", null, new { @class = "btn btn-success" })

@@ -164,7 +164,7 @@ namespace BIRA_Issue_Tracker.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
-			ViewBag.IsOwnIssue = UserCreatedIssue(issue);
+			ViewBag.IsOwnIssue = UserCreatedIssue(issue) || UserAuthorizedToEdit(issue);
 			ViewBag.ReturnTo = returnTo;
 			return View(issue);
 		}
@@ -176,7 +176,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit([Bind(Include = "Id,Title,Description,State,Author,Assignee,Date,Tags")] Issue issue, string returnTo = "Index")
 		{
-			var oldIssue = db.Issues.AsNoTracking().First(a => a.Id == issue.Id);
+			var oldIssue = db.Issues.First(a => a.Id == issue.Id);
 
 			if (UserCreatedIssue(oldIssue))
 			{
@@ -187,12 +187,11 @@ namespace BIRA_Issue_Tracker.Controllers
 			{
 				issue.Title = oldIssue.Title;
 				issue.Description = oldIssue.Description;
-
-				ModelState["Title"].Errors.Clear();
 			}
 			
 			oldIssue.State = issue.State;
 			
+
 			issue = oldIssue;
 
 			ViewBag.IsOwnIssue = UserCreatedIssue(issue);

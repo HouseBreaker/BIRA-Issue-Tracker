@@ -26,7 +26,7 @@ textarea {
 }
 
 .navbar-brand {
-	background: url(../Images/BIRA_logo.png);
+	background-image: url('../Images/BIRA_logo.png');
 	background-size: contain;
 	width: 6em;
 	height: 2.4em;

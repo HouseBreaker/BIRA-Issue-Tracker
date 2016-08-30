@@ -172,6 +172,7 @@
     <Compile Include="Controllers\IssuesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Extensions\NotificationExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,9 +197,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\BIRA_logo.png" />
     <Content Include="Images\BIRA_logo_nobubbles.png" />
-    <Content Include="Images\bubble1.png" />
-    <Content Include="Images\bubble2.png" />
-    <Content Include="Images\bubble3.png" />
     <Content Include="Images\bubblePop.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -259,6 +257,8 @@
     <Content Include="Views\Issues\Tagged.cshtml" />
     <Content Include="Views\Issues\Mine.cshtml" />
     <Content Include="Views\Shared\_TablePartial.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -16,6 +17,7 @@ namespace BIRA_Issue_Tracker.Models.Identity
             return userIdentity;
         }
 
+		[DisplayName("Full Name")]
 	    public string FullName { get; set; }
 
 	    public override string ToString()

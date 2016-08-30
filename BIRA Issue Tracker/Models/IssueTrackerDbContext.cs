@@ -20,5 +20,7 @@ namespace BIRA_Issue_Tracker.Models
 		public DbSet<Issue> Issues { get; set; }
 
 		public DbSet<Tag> Tags { get; set; }
+
+		// public System.Data.Entity.DbSet<BIRA_Issue_Tracker.Models.Identity.ApplicationUser> ApplicationUsers { get; set; }
 	}
 }

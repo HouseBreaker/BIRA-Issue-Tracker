@@ -15,11 +15,11 @@ namespace BIRA_Issue_Tracker.Controllers
 		{
 			var db = new IssueTrackerDbContext();
 
-			var unresolvedIssues = db.Issues.Where(a => a.State != State.Closed || a.State != State.Fixed);
-			ViewBag.UnresolvedIssuesCount = unresolvedIssues.Count();
-
 			if (User.Identity.IsAuthenticated)
 			{
+				var unresolvedIssues = db.Issues.Where(a => a.State != State.Closed && a.State != State.Fixed);
+				ViewBag.UnresolvedIssuesCount = unresolvedIssues.Count();
+
 				var currentUser = db.Users.Find(User.Identity.GetUserId());
 				ViewBag.Username = currentUser.FullName.Split(' ')[0];
 				ViewBag.UserAssignedUnresolvedIssuesCount = unresolvedIssues.Count(a => a.Assignee.Id == currentUser.Id);

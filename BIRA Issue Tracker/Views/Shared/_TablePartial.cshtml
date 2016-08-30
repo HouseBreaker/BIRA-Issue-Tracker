@@ -3,10 +3,12 @@
 
 @functions
 {
+
 	private string CurrentActionName()
 	{
 		return ViewContext.RouteData.Values["action"].ToString();
 	}
+
 }
 
 <table class="table table-striped">
@@ -33,7 +35,7 @@
 			@Html.DisplayNameFor(model => model.Tags)
 		</th>
 		<th>
-
+			Quick actions
 		</th>
 	</tr>
 
@@ -82,7 +84,7 @@
 					var disabledButtonClass = userAuthorizedToEdit ? string.Empty : "disabled";
 				}
 				<div class="btn-group flex">
-					@Html.ActionLink("Details", "Details", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, new {@class = "btn btn-primary"})
+					@Html.ActionLink("Details", "Details", "Issues", new {id = item.Id, returnTo = CurrentActionName()}, new {@class = "btn btn-primary"})
 					<button type="button" class="btn btn-primary dropdown-toggle @disabledButtonClass" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<span class="caret"></span>
 						<span class="sr-only">Toggle Dropdown</span>
@@ -95,14 +97,30 @@
 								var linkText = (userIsAssignedIssue && !userIsAuthor) && !userIsAdmin ? "Change state" : "Edit";
 							}
 
-							<li>@Html.ActionLink(linkText, "Edit", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, null)</li>
+							<li>@Html.ActionLink(linkText, "Edit", "Issues", new {id = item.Id, returnTo = CurrentActionName()}, null)</li>
 
 							@if (userIsAuthor || userIsAdmin)
 							{
-								<li>@Html.ActionLink("Delete", "Delete", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, null)</li>
+								<li>@Html.ActionLink("Delete", "Delete", "Issues", new {id = item.Id, returnTo = CurrentActionName()}, null)</li>	
 							}
 						</ul>
 					}
+								
+					@*<div class="modal fade deleteModal">
+						<div class="modal-content">
+							<div class="modal-header">
+								<div class="modal-title">I'm the header title</div>
+								<button data-dismiss="modal" class="close"><span>&times;</span></button>It's a header
+							</div>
+							<div class="modal-body">
+								It's the body
+							</div>
+							
+							<div class="modal-footer">
+								I'm a footer
+							</div>
+						</div>
+					</div>*@
 				</div>
 			</td>
 		</tr>

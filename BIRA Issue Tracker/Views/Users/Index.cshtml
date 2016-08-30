@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BIRA_Issue_Tracker.Models.Identity.ApplicationUser>
+
+@{
+	ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.FullName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Email)
+		</th>
+		<th>
+			Issues assigned
+		</th>
+		<th>
+			Issues assigned
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.FullName)
+			</td>
+			<td>
+				@Html.ActionLink(item.Email, "Profile", new { id = item.Email }, null)
+			</td>
+			<td>
+				not implemented yet
+			</td>
+			<td>
+				@Html.ActionLink("Details", "Profile", new {id = item.Email})
+			</td>
+		</tr>
+	}
+
+</table>
