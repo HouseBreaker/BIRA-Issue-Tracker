@@ -199,6 +199,7 @@
     <Content Include="Images\bubble1.png" />
     <Content Include="Images\bubble2.png" />
     <Content Include="Images\bubble3.png" />
+    <Content Include="Images\bubblePop.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
