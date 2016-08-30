@@ -97,7 +97,7 @@ blockquote {
 
 @-webkit-keyframes bubble2Move {
 	from { top: 70px;}
-	50% { right: 4px;}
+	50% { left: 3px;}
 	to { top: -40px;}
 }
 

@@ -9,8 +9,11 @@
 
 <p>
 	@Html.ActionLink("Submit New", "New", null, new {@class = "btn btn-success"})
-	@Html.ActionLink("My issues", "Mine", null, new {@class = "btn btn-primary"})
-	@Html.ActionLink("Assigned to me", "AssignedToMe", null, new {@class = "btn btn-primary"})
+	@if (User.Identity.IsAuthenticated)
+	{
+		@Html.ActionLink("My issues", "Mine", null, new { @class = "btn btn-primary" })
+		@Html.ActionLink("Assigned to me", "AssignedToMe", null, new { @class = "btn btn-primary" })
+	}
 </p>
 
 @Html.Partial("_TablePartial")
