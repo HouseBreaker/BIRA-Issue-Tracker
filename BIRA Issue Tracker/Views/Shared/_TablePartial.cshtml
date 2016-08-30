@@ -76,7 +76,8 @@
 				@{
 					var userIsAssignedIssue = item.Assignee.Id == User.Identity.GetUserId();
 					var userIsAuthor = item.Author.Id == User.Identity.GetUserId();
-					var userAuthorizedToEdit = userIsAssignedIssue || userIsAuthor || User.IsInRole("Administrators");
+					var userIsAdmin = User.IsInRole("Administrators");
+					var userAuthorizedToEdit = userIsAssignedIssue || userIsAuthor || userIsAdmin;
 
 					var disabledButtonClass = userAuthorizedToEdit ? string.Empty : "disabled";
 				}
@@ -91,12 +92,12 @@
 						<ul class="dropdown-menu">
 
 							@{
-								var linkText = userIsAssignedIssue && !userIsAuthor ? "Change state" : "Edit";
+								var linkText = (userIsAssignedIssue && !userIsAuthor) && !userIsAdmin ? "Change state" : "Edit";
 							}
 
 							<li>@Html.ActionLink(linkText, "Edit", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, null)</li>
 
-							@if (userIsAuthor)
+							@if (userIsAuthor || userIsAdmin)
 							{
 								<li>@Html.ActionLink("Delete", "Delete", "Issues", new {id = item.Id, returnTo = CurrentActionName() }, null)</li>
 							}
