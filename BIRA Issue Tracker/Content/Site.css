@@ -75,3 +75,46 @@ blockquote {
 .alert {
 	margin-top: 20px;
 }
+
+.beer-and-bubbles {
+	position: relative;
+}
+
+.bubble1, .bubble2, .bubble3{
+	position: absolute;
+}
+
+.bubble1, .bubble2, .bubble3 {
+	left: 0;
+	top: 60px;
+}
+
+@-webkit-keyframes bubble1Move {
+	0% { top: 60px;}
+	50% { left: 5px;}
+	100% { top: -45px;}
+}
+
+@-webkit-keyframes bubble2Move {
+	from { top: 70px;}
+	50% { right: 4px;}
+	to { top: -40px;}
+}
+
+@-webkit-keyframes bubble3Move {
+	from { top: 70px;}
+	50% { left: 6px;}
+	to { top: -50px;}
+}
+
+.bubble1 {
+	animation: 5.6s 0.2s bubble1Move linear infinite;
+}
+
+.bubble2 {
+	animation: 5s 0.6s bubble2Move linear infinite;
+}
+
+.bubble3 {
+	animation: 5.5s 0.3s bubble3Move linear infinite;
+}

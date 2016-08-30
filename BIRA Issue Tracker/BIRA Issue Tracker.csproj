@@ -195,6 +195,10 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\BIRA_logo.png" />
+    <Content Include="Images\BIRA_logo_nobubbles.png" />
+    <Content Include="Images\bubble1.png" />
+    <Content Include="Images\bubble2.png" />
+    <Content Include="Images\bubble3.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
