@@ -1,5 +1,4 @@
-﻿@using System.Collections
-@using BIRA_Issue_Tracker.Models.IssueTracker
+﻿@using BIRA_Issue_Tracker.Models.IssueTracker
 @model BIRA_Issue_Tracker.Models.Identity.ApplicationUser
 @{
 	ViewBag.Title = $"{Model.Email} - Profile";
@@ -48,6 +47,40 @@
 					@Html.ActionLink(issue.Title, "Details", "Issues", new { id = issue.Id }, new { @class = "list-group-item" })
 				}
 			</ul>
+		</dd>
+		
+		<dt>
+			Solved issues
+		</dt>
+		
+		<dd>
+			@{
+				int solvedIssuesRatio = ViewBag.SolvedIssuesRatio;
+				string progressBarColor;
+				if (solvedIssuesRatio < 20)
+				{
+					progressBarColor = "danger";
+				}
+				else if (solvedIssuesRatio >= 20 && solvedIssuesRatio < 50)
+				{
+					progressBarColor = "warning";
+				}
+				else if (solvedIssuesRatio >= 50 && solvedIssuesRatio <= 80)
+				{
+					progressBarColor = "warning";
+				}
+				else
+				{
+					progressBarColor = "success";
+				}
+			}
+
+			<div class="progress">
+				<div class="progress-bar progress-bar-@progressBarColor progress-bar-striped" role="progressbar"
+					aria-valuenow="@solvedIssuesRatio" aria-valuemin="0" aria-valuemax="100" style="width: @solvedIssuesRatio%">
+					@solvedIssuesRatio%
+				</div>
+			</div>
 		</dd>
 	</dl>
 </div>

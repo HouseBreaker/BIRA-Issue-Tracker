@@ -5,14 +5,14 @@
 	ViewBag.Title = "All issues";
 }
 
-<h2>Issues</h2>
+<h2>All Issues</h2>
 
 <p>
 	@Html.ActionLink("Submit New", "New", null, new {@class = "btn btn-success"})
 	@if (User.Identity.IsAuthenticated)
 	{
-		@Html.ActionLink("My issues", "Mine", null, new { @class = "btn btn-primary" })
-		@Html.ActionLink("Assigned to me", "AssignedToMe", null, new { @class = "btn btn-primary" })
+		@Html.ActionLink("My issues", "Mine", null, new {@class = "btn btn-primary"})
+		@Html.ActionLink("Assigned to me", "AssignedToMe", null, new {@class = "btn btn-primary"})
 	}
 </p>
 

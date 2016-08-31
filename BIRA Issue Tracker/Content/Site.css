@@ -160,3 +160,7 @@ blockquote {
 .issues {
 	display: inline-block;
 }
+
+.progress {
+	width: 26.5%;
+}

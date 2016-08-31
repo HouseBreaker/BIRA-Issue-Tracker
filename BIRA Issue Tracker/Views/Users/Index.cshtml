@@ -1,12 +1,13 @@
-﻿@model IEnumerable<BIRA_Issue_Tracker.Models.Identity.ApplicationUser>
+﻿@using BIRA_Issue_Tracker.Models.IssueTracker
+@model IEnumerable<BIRA_Issue_Tracker.Models.Identity.ApplicationUser>
 
 @{
-	ViewBag.Title = "Index";
+	ViewBag.Title = "All Users";
 }
 
 <h2>Index</h2>
 
-<table class="table">
+<table class="table table-striped table-bordered">
 	<tr>
 		<th>
 			@Html.DisplayNameFor(model => model.FullName)
@@ -15,28 +16,39 @@
 			@Html.DisplayNameFor(model => model.Email)
 		</th>
 		<th>
-			Issues assigned
+			Issues created
 		</th>
 		<th>
 			Issues assigned
 		</th>
-		<th></th>
+		<th>Quick actions</th>
 	</tr>
 
-	@foreach (var item in Model)
+	@foreach (var user in Model)
 	{
 		<tr>
 			<td>
-				@Html.DisplayFor(modelItem => item.FullName)
+				@Html.DisplayFor(modelItem => user.FullName)
 			</td>
 			<td>
-				@Html.ActionLink(item.Email, "Profile", new { id = item.Email }, null)
+				@Html.ActionLink(user.Email, "Profile", new {id = user.Email}, null)
 			</td>
 			<td>
-				not implemented yet
+				@{
+					IEnumerable<Issue> issues = ViewBag.Issues;
+					var createdIssuesCount = issues.Count(a => a.Author.Id == user.Id);
+					var assignedIssuesCount = issues.Count(a => a.Assignee.Id == user.Id);
+				}
+
+				@*todo: issues from user*@
+				@createdIssuesCount
 			</td>
 			<td>
-				@Html.ActionLink("Details", "Profile", new {id = item.Email})
+				@*todo: issues from user*@
+				@assignedIssuesCount
+			</td>
+			<td>
+				@Html.ActionLink("Details", "Profile", new {id = user.Email}, new {@class = "btn btn-primary"})
 			</td>
 		</tr>
 	}

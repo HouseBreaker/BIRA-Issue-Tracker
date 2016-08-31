@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BIRA_Issue_Tracker.Models;
 using BIRA_Issue_Tracker.Models.Identity;
+using BIRA_Issue_Tracker.Models.IssueTracker;
 
 namespace BIRA_Issue_Tracker.Controllers
 {
@@ -18,7 +19,10 @@ namespace BIRA_Issue_Tracker.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+	        var issues = db.Issues.ToList();
+	        ViewBag.Issues = issues;
+
+			return View(db.Users.ToList());
         }
 
         // GET: Users/Profile/5
@@ -41,6 +45,9 @@ namespace BIRA_Issue_Tracker.Controllers
 
 	        ViewBag.CreatedIssues = createdIssues;
 	        ViewBag.AssignedIssues = assignedIssues;
+
+	        var solvedIssuesRatio = (int)(assignedIssues.Count(a => a.State == State.Fixed || a.State == State.Closed) / (double)assignedIssues.Count * 100);
+	        ViewBag.SolvedIssuesRatio = solvedIssuesRatio;
 
 			return View(user);
         }
