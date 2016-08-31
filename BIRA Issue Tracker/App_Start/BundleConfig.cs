@@ -23,6 +23,10 @@ namespace BIRA_Issue_Tracker
 					  "~/Scripts/bootstrap.js",
 					  "~/Scripts/respond.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/tables").Include(
+					  "~/Scripts/jquery.dataTables.min.js",
+					  "~/Scripts/dataTables.bootstrap.js"));
+
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					  "~/Content/bootstrap.css",
 					  "~/Content/site.css"));

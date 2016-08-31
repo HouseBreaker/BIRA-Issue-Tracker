@@ -11,7 +11,8 @@
 
 }
 
-<table class="table table-striped table-bordered">
+<table id="issues" class="table table-striped table-bordered">
+	<thead>
 	<tr>
 		<th>
 			@Html.DisplayNameFor(model => model.Title)
@@ -38,7 +39,8 @@
 			Quick actions
 		</th>
 	</tr>
-
+	</thead>
+	<tbody>
 	@foreach (var item in Model)
 	{
 		<tr>
@@ -52,10 +54,10 @@
 				@Html.DisplayFor(modelItem => item.State)
 			</td>
 			<td>
-				@Html.ActionLink(item.Author.Email, "Profile", "Users", new { id = item.Author.Email }, null)
+				@Html.ActionLink(item.Author.Email, "Profile", "Users", new {id = item.Author.Email}, null)
 			</td>
 			<td>
-				@Html.ActionLink(item.Assignee.Email, "Profile", "Users", new { id = item.Assignee.Email }, null)
+				@Html.ActionLink(item.Assignee.Email, "Profile", "Users", new {id = item.Assignee.Email}, null)
 			</td>
 			<td>
 				@Html.DisplayFor(modelItem => item.Date)
@@ -101,28 +103,19 @@
 
 							@if (userIsAuthor || userIsAdmin)
 							{
-								<li>@Html.ActionLink("Delete", "Delete", "Issues", new {id = item.Id, returnTo = CurrentActionName()}, null)</li>	
+								<li>@Html.ActionLink("Delete", "Delete", "Issues", new {id = item.Id, returnTo = CurrentActionName()}, null)</li>
 							}
 						</ul>
 					}
-								
-					@*<div class="modal fade deleteModal">
-						<div class="modal-content">
-							<div class="modal-header">
-								<div class="modal-title">I'm the header title</div>
-								<button data-dismiss="modal" class="close"><span>&times;</span></button>It's a header
-							</div>
-							<div class="modal-body">
-								It's the body
-							</div>
-							
-							<div class="modal-footer">
-								I'm a footer
-							</div>
-						</div>
-					</div>*@
+
 				</div>
 			</td>
 		</tr>
 	}
+	</tbody>
 </table>
+
+
+@Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+@Scripts.Render("~/Scripts/dataTables.bootstrap.js")
+@Scripts.Render("~/Scripts/tableSort.js")
