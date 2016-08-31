@@ -130,7 +130,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			issue.Author = db.Users.Find(User.Identity.GetUserId());
 			issue.Assignee = db.Users.FirstOrDefault(a => a.UserName == assignee);
 
-			issue.Tags = new HashSet<Tag>();
+			issue.Tags = new SortedSet<Tag>();
 			foreach (var tagName in tags)
 			{
 				Tag tag;
