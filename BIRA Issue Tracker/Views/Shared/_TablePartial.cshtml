@@ -52,10 +52,10 @@
 				@Html.DisplayFor(modelItem => item.State)
 			</td>
 			<td>
-				@Html.DisplayFor(modelItem => item.Author.Email)
+				@Html.ActionLink(item.Author.Email, "Profile", "Users", new { id = item.Author.Email }, null)
 			</td>
 			<td>
-				@Html.DisplayFor(modelItem => item.Assignee.Email)
+				@Html.ActionLink(item.Assignee.Email, "Profile", "Users", new { id = item.Assignee.Email }, null)
 			</td>
 			<td>
 				@Html.DisplayFor(modelItem => item.Date)

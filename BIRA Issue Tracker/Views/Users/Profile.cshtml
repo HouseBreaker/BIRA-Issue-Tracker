@@ -7,7 +7,7 @@
 <div>
 	<h3>Profile - @Model.FullName</h3>
 	<hr />
-	<dl class="dl-horizontal col-md-6">
+	<dl class="dl-horizontal">
 		<dt>
 			@Html.DisplayNameFor(model => model.FullName)
 		</dt>
@@ -29,12 +29,12 @@
 		</dt>
 
 		<dd>
-			<div class="list-group">
+			<ul class="list-group issues">
 				@foreach (var issue in (IEnumerable<Issue>)ViewBag.CreatedIssues)
 				{
 					@Html.ActionLink(issue.Title, "Details", "Issues", new { id = issue.Id }, new { @class = "list-group-item" })
 				}
-			</div>
+			</ul>
 		</dd>
 
 		<dt>
@@ -42,7 +42,7 @@
 		</dt>
 
 		<dd>
-			<ul class="list-group">
+			<ul class="list-group issues">
 				@foreach (var issue in (IEnumerable<Issue>)ViewBag.AssignedIssues)
 				{
 					@Html.ActionLink(issue.Title, "Details", "Issues", new { id = issue.Id }, new { @class = "list-group-item" })

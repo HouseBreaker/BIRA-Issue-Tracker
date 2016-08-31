@@ -38,7 +38,7 @@ textarea {
 }
 
 .navbar-brand:hover {
-	transform: scale(1.12);
+	transform: scale(1.07);
 }
 
 div.navbar-collapse *{
@@ -155,4 +155,8 @@ blockquote {
 @-webkit-keyframes bubblePop {
 	0% { background-position: 50px;}
 	99% { background-position: 0; border: none;}	
+}
+
+.issues {
+	display: inline-block;
 }

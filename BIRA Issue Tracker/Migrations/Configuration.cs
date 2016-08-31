@@ -21,37 +21,37 @@ namespace BIRA_Issue_Tracker.Migrations
 			ContextKey = "BIRA_Issue_Tracker.Models.IssueTrackerDbContext";
 		}
 
-		protected override void Seed(IssueTrackerDbContext context)
+		protected override void Seed(IssueTrackerDbContext db)
 		{
-			if (!context.Users.Any())
+			if (!db.Users.Any())
 			{
-				CreateUser(context, "admin@gmail.com", "123", "Vladi Admina");
-				CreateUser(context, "pesho@gmail.com", "123", "Peter Ivanov");
-				CreateUser(context, "merry@gmail.com", "123", "Maria Petrova");
-				CreateUser(context, "gosho@gmail.com", "123", "George Petrov");
+				CreateUser(db, "admin@gmail.com", "123", "Vladi Admina");
+				CreateUser(db, "pesho@gmail.com", "123", "Peter Ivanov");
+				CreateUser(db, "merry@gmail.com", "123", "Maria Petrova");
+				CreateUser(db, "gosho@gmail.com", "123", "George Petrov");
 
-				CreateRole(context, "Administrators");
-				AddUserToRole(context, "admin@gmail.com", "Administrators");
+				CreateRole(db, "Administrators");
+				AddUserToRole(db, "admin@gmail.com", "Administrators");
 			}
 
-			if (!context.Tags.Any())
-			{
-				context.Tags.AddRange(new HashSet<Tag>
-				{
-					new Tag("user input"),
-					new Tag("user interface"),
-					new Tag("network"),
-					new Tag("general"),
-					new Tag("registration"),
-					new Tag("login"),
-				});
-			}
+			//if (!db.Tags.Any())
+			//{
+			//	db.Tags.AddRange(new HashSet<Tag>
+			//	{
+			//		new Tag("user input"),
+			//		new Tag("user interface"),
+			//		new Tag("network"),
+			//		new Tag("general"),
+			//		new Tag("registration"),
+			//		new Tag("login"),
+			//	});
+			//}
 
-			context.SaveChanges();
+			db.SaveChanges();
 
-			if (!context.Issues.Any())
+			if (!db.Issues.Any())
 			{
-				CreateIssue(context,
+				CreateIssue(db,
 					"HTTP 400 error",
 					"Adding an author with incorrect date format will return an HTTP 400 response code.",
 					State.Open,
@@ -59,97 +59,108 @@ namespace BIRA_Issue_Tracker.Migrations
 					"gosho@gmail.com",
 					new HashSet<Tag>
 					{
-						FindTagByName(context, "user input"),
-						FindTagByName(context, "network"),
+						FindTagByName(db, "user input"),
+						FindTagByName(db, "network"),
 					}
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"00 birthday causes exception",
-					"Adding an author with a birth date which has day 00 will add the author with a birth date of the last day of the previous month.",
+					"Adding an author with a birth date which has day 00 will add the author with a birth date of the last day of the previous month",
 					State.Open,
 					"pesho@gmail.com",
 					"merry@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"negative birthday causes exception",
-					"Adding an author with a birth date the day of which is negative will add the author with a birth date which is the same but the day is non negative.",
+					"Adding an author with a birth date the day of which is negative will add the author with a birth date which is the same but the day is non negative",
 					State.Open,
 					"merry@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"no last name causes exception",
 					"Adding an author with a valid first name andate, but no last name throws an unhandled exception \"Last name out of range\" insteaof validating the input before sending it.",
 					State.Open,
 					"gosho@gmail.com",
 					"admin@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"missing first name causes exception",
 					"Adding an author with a valid last name and date, but no first name throws an unhandled exception \"First name out of range\" instead of validating the input before sending it.",
 					State.Open,
 					"pesho@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"short first name it causes exception",
 					"If first name is too short, the system throws an unhandled exception \"First name out of range\" instead of validating the input before sending it.",
 					State.Open,
 					"admin@gmail.com",
 					"admin@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"short last name causes exception",
 					"If last name is too short, the system throws an unhandled exception \"Last name out of range\" instead of validating the input before sending it.",
 					State.Open,
 					"merry@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"Wrong first name upper limit",
 					"First name upper limit is 239 characters instead of 240",
 					State.Open,
 					"merry@gmail.com",
 					"admin@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 
-				CreateIssue(context,
+				CreateIssue(db,
 					"Wrong last name upper limit",
 					"Last name upper limit is 237 characters instead of 240",
 					State.Open,
 					"gosho@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(context, "user input"), }
+					new HashSet<Tag> { FindTagByName(db, "user input"), }
 				);
 			}
 
-			context.SaveChanges();
+			db.SaveChanges();
 		}
 
-		private static Tag FindTagByName(IssueTrackerDbContext context, string name)
+		private static Tag FindTagByName(IssueTrackerDbContext db, string name)
 		{
-			return context.Tags.FirstOrDefault(a => a.Name == name);
+			var foundTag = db.Tags.FirstOrDefault(t => t.Name == name);
+			
+			if (foundTag == null)
+			{
+				var newTag = new Tag(name);
+				db.Tags.Add(newTag);
+
+				db.SaveChanges();
+				return db.Tags.FirstOrDefault(t => t.Name == newTag.Name);
+			}
+
+			return foundTag;
 		}
 
-		private static void CreateUser(IssueTrackerDbContext context,
+		private static void CreateUser(IssueTrackerDbContext db,
 			string email, string password, string fullName)
 		{
 			var userManager = new UserManager<ApplicationUser>(
-				new UserStore<ApplicationUser>(context))
+				new UserStore<ApplicationUser>(db))
 			{
 				PasswordValidator = new PasswordValidator
 				{
@@ -175,11 +186,11 @@ namespace BIRA_Issue_Tracker.Migrations
 			}
 		}
 
-		private static void CreateIssue(IssueTrackerDbContext context, string title, string description, State state,
+		private static void CreateIssue(IssueTrackerDbContext db, string title, string description, State state,
 			string author, string assignee, ISet<Tag> tags)
 		{
-			var authorAsUser = context.Users.FirstOrDefault(u => u.UserName == author);
-			var assigneeAsUser = context.Users.FirstOrDefault(u => u.UserName == assignee);
+			var authorAsUser = db.Users.FirstOrDefault(u => u.UserName == author);
+			var assigneeAsUser = db.Users.FirstOrDefault(u => u.UserName == assignee);
 
 			var issue = new Issue
 			{
@@ -192,8 +203,8 @@ namespace BIRA_Issue_Tracker.Migrations
 				Tags = tags
 			};
 			
-			context.Issues.Add(issue);
-			//var issueInDatabase = context.Issues.Find(issue.Id);
+			db.Issues.Add(issue);
+			//var issueInDatabase = db.Issues.Find(issue.Id);
 
 			//foreach (var tag in tags)
 			//{
@@ -201,10 +212,10 @@ namespace BIRA_Issue_Tracker.Migrations
 			//}
 		}
 
-		private void CreateRole(IssueTrackerDbContext context, string roleName)
+		private void CreateRole(IssueTrackerDbContext db, string roleName)
 		{
 			var roleManager = new RoleManager<IdentityRole>(
-				new RoleStore<IdentityRole>(context));
+				new RoleStore<IdentityRole>(db));
 			var roleCreateResult = roleManager.Create(new IdentityRole(roleName));
 			if (!roleCreateResult.Succeeded)
 			{
@@ -212,11 +223,11 @@ namespace BIRA_Issue_Tracker.Migrations
 			}
 		}
 
-		private static void AddUserToRole(IssueTrackerDbContext context, string userName, string roleName)
+		private static void AddUserToRole(IssueTrackerDbContext db, string userName, string roleName)
 		{
-			var user = context.Users.First(u => u.UserName == userName);
+			var user = db.Users.First(u => u.UserName == userName);
 			var userManager = new UserManager<ApplicationUser>(
-				new UserStore<ApplicationUser>(context));
+				new UserStore<ApplicationUser>(db));
 			var addAdminRoleResult = userManager.AddToRole(user.Id, roleName);
 			if (!addAdminRoleResult.Succeeded)
 			{

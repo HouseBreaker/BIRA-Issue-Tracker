@@ -79,7 +79,7 @@
 	{
 		@Html.ActionLink(User.Identity.GetUserId() == Model.Author.Id || User.IsInRole("Administrators") ? "Edit" : "Change State", "Edit", new {id = Model.Id, returnTo = returnToAction}, new {@class = "btn btn-primary"})
 
-		if (Model.Author.Id == User.Identity.GetUserId())
+		if (Model.Author.Id == User.Identity.GetUserId() || User.IsInRole("Administrators"))
 		{
 			<span>@Html.ActionLink("Delete", "Delete", new {id = Model.Id, returnTo = returnToAction}, new {@class = "btn btn-danger"})</span>
 		}
