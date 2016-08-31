@@ -46,21 +46,24 @@
 		</dt>
 
 		<dd>
-			@Html.DisplayFor(model => model.Author.Email)
+			@Html.ActionLink(Model.Author.Email, "Profile", "Users", new { id = Model.Author.Email }, null)
 		</dd>
 		<dt>
 			@Html.DisplayNameFor(model => model.Assignee)
 		</dt>
 
 		<dd>
-			@Html.DisplayFor(model => model.Assignee.Email)
+			@Html.ActionLink(Model.Assignee.Email, "Profile", "Users", new { id = Model.Assignee.Email }, null)
 		</dd>
 		<dt>
 			@Html.DisplayNameFor(model => model.Tags)
 		</dt>
 
 		<dd>
-			@Html.DisplayFor(model => model.Tags)
+			@foreach (var tag in Model.Tags)
+			{
+				<span>@Html.ActionLink(tag.Name, "Tagged", new { id = tag.Slug }, new { @class = "btn btn-primary btn-xs" })</span>
+			}
 		</dd>
     </dl>
 

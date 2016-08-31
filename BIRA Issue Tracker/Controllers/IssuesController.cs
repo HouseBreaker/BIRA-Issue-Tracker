@@ -121,7 +121,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			var assignee = Request["Assignee"];
 			var tagsRequest = Request["Tags"];
 
-			var tags = tagsRequest.Split(',').Select(a => a.Trim()).ToArray();
+			var tags = tagsRequest.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(a => a.Trim()).ToArray();
 			
 			ModelState["Tags"].Errors.Clear();
 			ModelState["Author"].Errors.Clear();
