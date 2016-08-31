@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace BIRA_Issue_Tracker.Models.IssueTracker
 {
-	public class Tag
+	public class Tag : IComparable
 	{
 		public Tag(string name)
 		{
@@ -37,6 +38,17 @@ namespace BIRA_Issue_Tracker.Models.IssueTracker
 		public override string ToString()
 		{
 			return this.Name;
+		}
+
+		public int CompareTo(object other)
+		{
+			if (other is Tag)
+			{
+				var otherTyped = (Tag) other;
+				return string.Compare(this.Slug, otherTyped.Slug, StringComparison.Ordinal);
+			}
+
+			throw new ArgumentException("Cannot compare Tag with current object");
 		}
 	}
 }

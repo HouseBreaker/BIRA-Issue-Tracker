@@ -8,11 +8,10 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace BIRA_Issue_Tracker.Migrations
 {
 	using System;
-	using System.Data.Entity;
 	using System.Data.Entity.Migrations;
 	using System.Linq;
 
-	internal sealed class Configuration : DbMigrationsConfiguration<BIRA_Issue_Tracker.Models.IssueTrackerDbContext>
+	internal sealed class Configuration : DbMigrationsConfiguration<IssueTrackerDbContext>
 	{
 		public Configuration()
 		{
@@ -26,26 +25,13 @@ namespace BIRA_Issue_Tracker.Migrations
 			if (!db.Users.Any())
 			{
 				CreateUser(db, "admin@gmail.com", "123", "Vladi Admina");
+				CreateUser(db, "gosho@gmail.com", "123", "George Petrov");
 				CreateUser(db, "pesho@gmail.com", "123", "Peter Ivanov");
 				CreateUser(db, "merry@gmail.com", "123", "Maria Petrova");
-				CreateUser(db, "gosho@gmail.com", "123", "George Petrov");
 
 				CreateRole(db, "Administrators");
 				AddUserToRole(db, "admin@gmail.com", "Administrators");
 			}
-
-			//if (!db.Tags.Any())
-			//{
-			//	db.Tags.AddRange(new HashSet<Tag>
-			//	{
-			//		new Tag("user input"),
-			//		new Tag("user interface"),
-			//		new Tag("network"),
-			//		new Tag("general"),
-			//		new Tag("registration"),
-			//		new Tag("login"),
-			//	});
-			//}
 
 			db.SaveChanges();
 
@@ -57,20 +43,29 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"admin@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag>
+					new SortedSet<Tag>
 					{
 						FindTagByName(db, "user input"),
 						FindTagByName(db, "network"),
+						FindTagByName(db, "date"),
+						FindTagByName(db, "HTTP 400"),
+						FindTagByName(db, "author"),
 					}
 				);
 
 				CreateIssue(db,
-					"00 birthday causes exception",
+					"\'00\' birthday causes exception",
 					"Adding an author with a birth date which has day 00 will add the author with a birth date of the last day of the previous month",
 					State.Open,
 					"pesho@gmail.com",
 					"merry@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "birth date"),
+						FindTagByName(db, "form"),
+						FindTagByName(db, "error"),
+						FindTagByName(db, "input validation"),
+					}
 				);
 
 				CreateIssue(db,
@@ -79,16 +74,26 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"merry@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "birthday"),
+						FindTagByName(db, "error"),
+						FindTagByName(db, "input validation"),
+					}
 				);
 
 				CreateIssue(db,
 					"no last name causes exception",
-					"Adding an author with a valid first name andate, but no last name throws an unhandled exception \"Last name out of range\" insteaof validating the input before sending it.",
+					"Adding an author with a valid first name and date, but no last name throws an unhandled exception \"Last name out of range\" insteaof validating the input before sending it.",
 					State.Open,
 					"gosho@gmail.com",
 					"admin@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "form"),
+						FindTagByName(db, "last name"),
+						FindTagByName(db, "date"),
+					}
 				);
 
 				CreateIssue(db,
@@ -97,16 +102,26 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"pesho@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "form"),
+						FindTagByName(db, "last name"),
+						FindTagByName(db, "date"),
+					}
 				);
 
 				CreateIssue(db,
-					"short first name it causes exception",
+					"short first name causes exception",
 					"If first name is too short, the system throws an unhandled exception \"First name out of range\" instead of validating the input before sending it.",
 					State.Open,
 					"admin@gmail.com",
 					"admin@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "first name"),
+						FindTagByName(db, "error"),
+						FindTagByName(db, "form"),
+					}
 				);
 
 				CreateIssue(db,
@@ -115,7 +130,12 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"merry@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "last name"),
+						FindTagByName(db, "error"),
+						FindTagByName(db, "form"),
+					}
 				);
 
 				CreateIssue(db,
@@ -124,7 +144,12 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"merry@gmail.com",
 					"admin@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "back end"),
+						FindTagByName(db, "form"),
+						FindTagByName(db, "error"),
+					}
 				);
 
 				CreateIssue(db,
@@ -133,7 +158,26 @@ namespace BIRA_Issue_Tracker.Migrations
 					State.Open,
 					"gosho@gmail.com",
 					"gosho@gmail.com",
-					new HashSet<Tag> { FindTagByName(db, "user input"), }
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "back end"),
+						FindTagByName(db, "form"),
+						FindTagByName(db, "error"),
+					}
+				);
+
+				CreateIssue(db,
+					"Tags don't work",
+					"Last name upper limit is 237 characters instead of 240",
+					State.Open,
+					"gosho@gmail.com",
+					"gosho@gmail.com",
+					new SortedSet<Tag>
+					{
+						FindTagByName(db, "back end"),
+						FindTagByName(db, "form"),
+						FindTagByName(db, "error"),
+					}
 				);
 			}
 
@@ -143,7 +187,7 @@ namespace BIRA_Issue_Tracker.Migrations
 		private static Tag FindTagByName(IssueTrackerDbContext db, string name)
 		{
 			var foundTag = db.Tags.FirstOrDefault(t => t.Name == name);
-			
+
 			if (foundTag == null)
 			{
 				var newTag = new Tag(name);
@@ -202,7 +246,7 @@ namespace BIRA_Issue_Tracker.Migrations
 				Date = DateTime.Now,
 				Tags = tags
 			};
-			
+
 			db.Issues.Add(issue);
 			//var issueInDatabase = db.Issues.Find(issue.Id);
 
