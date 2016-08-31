@@ -164,7 +164,7 @@ namespace BIRA_Issue_Tracker.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
 			}
 
-			ViewBag.IsOwnIssue = UserCreatedIssue(issue) || UserAuthorizedToEdit(issue);
+			ViewBag.IsOwnIssue = UserCreatedIssue(issue) || UserIsAdmin(issue);
 			ViewBag.ReturnTo = returnTo;
 			return View(issue);
 		}
@@ -178,7 +178,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		{
 			var oldIssue = db.Issues.First(a => a.Id == issue.Id);
 
-			if (UserCreatedIssue(oldIssue))
+			if (UserCreatedIssue(oldIssue) || UserIsAdmin())
 			{
 				oldIssue.Title = issue.Title;
 				oldIssue.Description = issue.Description;
@@ -188,7 +188,7 @@ namespace BIRA_Issue_Tracker.Controllers
 				issue.Title = oldIssue.Title;
 				issue.Description = oldIssue.Description;
 			}
-			
+
 			oldIssue.State = issue.State;
 			
 
@@ -272,7 +272,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		{
 			// user should not edit others' issues unless they're an admin
 			var isOwnIssue = UserCreatedIssue(issue);
-			var isAdmin = User.IsInRole("Administrators");
+			var isAdmin = UserIsAdmin(issue);
 			var isAssignedIssue = UserIsAssignedIssue(issue);
 		
 			var authorizedToEdit = isOwnIssue || isAssignedIssue || isAdmin;
@@ -287,6 +287,11 @@ namespace BIRA_Issue_Tracker.Controllers
 		private bool UserIsAssignedIssue(Issue issue)
 		{
 			return User.Identity.GetUserId() == issue.Assignee.Id;
+		}
+
+		private bool UserIsAdmin(Issue issue)
+		{
+			return User.IsInRole("Administrators");
 		}
 
 		protected override void Dispose(bool disposing)
