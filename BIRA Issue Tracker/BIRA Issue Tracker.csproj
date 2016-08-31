@@ -262,6 +262,8 @@
     <Content Include="Views\Shared\_TablePartial.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Profile.cshtml" />
+    <Content Include="Views\Issues\AssignedTo.cshtml" />
+    <Content Include="Views\Issues\By.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

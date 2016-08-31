@@ -1,0 +1,22 @@
+﻿@model IEnumerable<BIRA_Issue_Tracker.Models.IssueTracker.Issue>
+
+@{
+	ViewBag.Title = $"Issues by {ViewBag.AuthorUsername}";
+}
+
+@functions {
+
+	private string CurrentActionName()
+	{
+		return ViewContext.RouteData.Values["action"].ToString();
+	}
+}
+
+<h2>Issues by @ViewBag.AuthorUsername</h2>
+
+<p>
+	@Html.ActionLink("Submit New", "New", new {returnUrl = CurrentActionName()}, new {@class = "btn btn-success"})
+	@Html.ActionLink("My issues", "Mine", null, new {@class = "btn btn-primary"})
+</p>
+
+@Html.Partial("_TablePartial")

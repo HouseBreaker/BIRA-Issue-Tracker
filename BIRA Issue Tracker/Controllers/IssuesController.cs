@@ -53,6 +53,24 @@ namespace BIRA_Issue_Tracker.Controllers
 			return View(currentUserIssues);
 		}
 
+		// GET: Issues/AssignedTo/test@gmail.com
+		public ActionResult AssignedTo(string id)
+		{
+			var currentUserIssues = db.Issues.Where(i => i.Assignee.UserName == id).ToList();
+
+			ViewBag.AssigneeUsername = id;
+			return View(currentUserIssues);
+		}
+
+		// GET: Issues/By/test@gmail.com
+		public ActionResult By(string id)
+		{
+			var currentUserIssues = db.Issues.Where(i => i.Author.UserName == id).ToList();
+
+			ViewBag.AuthorUsername = id;
+			return View(currentUserIssues);
+		}
+
 		// GET: Issues/Mine
 		[Authorize]
 		public ActionResult Mine()

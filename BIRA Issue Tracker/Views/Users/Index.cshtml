@@ -40,12 +40,10 @@
 					var assignedIssuesCount = issues.Count(a => a.Assignee.Id == user.Id);
 				}
 
-				@*todo: issues from user*@
-				@createdIssuesCount
+				@Html.ActionLink(createdIssuesCount.ToString(), "By", "Issues", new { id = user.UserName }, null)
 			</td>
 			<td>
-				@*todo: issues from user*@
-				@assignedIssuesCount
+				@Html.ActionLink(assignedIssuesCount.ToString(), "AssignedTo", "Issues", new { id = user.UserName }, null)
 			</td>
 			<td>
 				@Html.ActionLink("Details", "Profile", new {id = user.Email}, new {@class = "btn btn-primary"})
