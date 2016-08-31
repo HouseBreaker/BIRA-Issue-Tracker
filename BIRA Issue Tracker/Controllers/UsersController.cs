@@ -25,7 +25,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			return View(db.Users.ToList());
         }
 
-        // GET: Users/Profile/5
+        // GET: Users/Profile/test@gmail.com
         public ActionResult Profile(string id)
         {
 	        var email = id;
@@ -46,8 +46,16 @@ namespace BIRA_Issue_Tracker.Controllers
 	        ViewBag.CreatedIssues = createdIssues;
 	        ViewBag.AssignedIssues = assignedIssues;
 
-	        var solvedIssuesRatio = (int)(assignedIssues.Count(a => a.State == State.Fixed || a.State == State.Closed) / (double)assignedIssues.Count * 100);
-	        ViewBag.SolvedIssuesRatio = solvedIssuesRatio;
+	        int solvedIssuesRatio = 0;
+	        if (!assignedIssues.Any())
+	        {
+		        solvedIssuesRatio = 100;
+	        }
+	        else
+	        {
+		        solvedIssuesRatio = (int)(assignedIssues.Count(a => a.State == State.Fixed || a.State == State.Closed) / (double)assignedIssues.Count * 100);
+			}
+			ViewBag.SolvedIssuesRatio = solvedIssuesRatio;
 
 			return View(user);
         }

@@ -22,7 +22,7 @@ namespace BIRA_Issue_Tracker.Controllers
 			return View(db.Issues.ToList());
 		}
 
-		// GET: Tagged
+		// GET: Tagged/test-slug
 		public ActionResult Tagged(string id)
 		{
 			var slug = id;
@@ -178,7 +178,7 @@ namespace BIRA_Issue_Tracker.Controllers
 		{
 			var oldIssue = db.Issues.First(a => a.Id == issue.Id);
 
-			if (UserCreatedIssue(oldIssue) || UserIsAdmin())
+			if (UserCreatedIssue(oldIssue) || UserIsAdmin(issue))
 			{
 				oldIssue.Title = issue.Title;
 				oldIssue.Description = issue.Description;
