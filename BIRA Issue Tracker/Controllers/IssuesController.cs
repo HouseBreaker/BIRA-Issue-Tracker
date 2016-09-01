@@ -194,6 +194,12 @@ namespace BIRA_Issue_Tracker.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit([Bind(Include = "Id,Title,Description,State,Author,Assignee,Date,Tags")] Issue issue, string returnTo = "Index")
 		{
+			if (!UserAuthorizedToEdit(issue))
+			{
+				this.AddNotification("You're not authorized to edit this issue! Please log in.", NotificationType.Error);
+				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
+			}
+
 			var oldIssue = db.Issues.First(a => a.Id == issue.Id);
 
 			if (UserCreatedIssue(oldIssue) || UserIsAdmin(issue))
@@ -218,12 +224,6 @@ namespace BIRA_Issue_Tracker.Controllers
 			ModelState["Tags"].Errors.Clear();
 
 			TryValidateModel(issue);
-
-			if (!UserAuthorizedToEdit(issue))
-			{
-				this.AddNotification("You're not authorized to edit this issue! Please log in.", NotificationType.Error);
-				return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "You're not authorized to edit others' issues");
-			}
 
 			if (ModelState.IsValid)
 			{
